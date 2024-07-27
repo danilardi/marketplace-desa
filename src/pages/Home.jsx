@@ -33,7 +33,7 @@ const Home = () => {
                         </div>
                         <figure>
                             <img
-                                src="https://img.daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsXZmtztoH5de1OhcI0qjEjNa6MJF_owcXvA&s"
                                 alt="Album" />
                         </figure>
                     </div>

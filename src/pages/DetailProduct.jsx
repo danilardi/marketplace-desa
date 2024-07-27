@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react"
 import { fetchProductById } from "../utils/API/Product"
 import { Link, useParams } from "react-router-dom"
+import { Carousel } from 'primereact/carousel';
 import Product from "./Product"
 
 
 const DetailProduct = () => {
     const [product, setProduct] = useState(null)
-    const [newProduct, setNewProduct] = useState([])
+    const [images, setImages] = useState([])
 
     const params = useParams()
 
@@ -16,17 +17,12 @@ const DetailProduct = () => {
     }, [params])
 
     useEffect(() => {
-        if (product == null) return
-        let newProduct = product
-        if (newProduct.images !== null) {
-            newProduct.images.forEach((element, index) => {
-                element = element.replace("http://localhost:3000", import.meta.env.VITE_BACKEND_URL)
-                newProduct.images[index] = element
-            });
-        }
-        console.log(newProduct)
-        setNewProduct(newProduct)
+        console.log(product)
     }, [product])
+
+    useEffect(() => {
+        
+
 
     /* 
     {
@@ -52,23 +48,24 @@ const DetailProduct = () => {
                         </Link>
                     </li>
                     <li><Link to={'/product'}>Produk</Link></li>
-                    <li><span className="inline-flex items-center gap-2">{newProduct.name}</span></li>
+                    <li><span className="inline-flex items-center gap-2">{product.name}</span></li>
                 </ul>
             </div>
-            <div className="flex">
-                <div className="card lg:card-side">
-                    <div className="card-body">
-                        <h2 className="card-title">{newProduct.name}</h2>
-                        <p>{newProduct.description}</p>
-                        <div className="card-actions justify-start">
-                            <button className="btn btn-primary text-white">Beli</button>
+            <div className="flex bg-primary">
+                <div className="flex-1">
+                    {/* create image slider */}
+                    <div className="slider">
+                        <div className="slides">
+                            {product.images.map((image, index) => (
+                                <div key={index} className="slide">
+                                    <img src={image} alt="product" onError={} />
+                                </div>
+                            ))}
                         </div>
                     </div>
-                    <figure>
-                        <img
-                            src={'/src/assets/image/placeholder.png'}
-                            alt="Album" />
-                    </figure>
+                </div>
+                <div className="flex-1">
+                    cek
                 </div>
             </div>
         </>

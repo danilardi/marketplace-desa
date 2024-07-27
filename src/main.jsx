@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import "../src/utils/index.js"
 
 import '@flaticon/flaticon-uicons/css/all/all.css'
 import './assets/css/index.css'
