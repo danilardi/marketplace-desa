@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import { fetchProduct, fetchProductById } from "../utils/API/Product"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button } from 'primereact/button';
 import StarRating from "../components/StarRating";
@@ -9,9 +9,14 @@ import { formatCurrency } from "../utils/FormatUtils";
 import CardProduct from "../components/CardProduct";
 import { getBaseURLWithPrefix } from "../utils/Helper";
 import { addToCart } from "../utils/API/Cart";
+import { useNavbar } from "../components/Navbar";
+import { ToastWarning } from "../utils/AlertNotification";
 
 
 const DetailProduct = () => {
+    const navigate = useNavigate()
+    const { badge, setBadge, isLogin } = useNavbar()
+
     const [product, setProduct] = useState(null)
     const [otherProduct, setOtherProduct] = useState(null)
     const [quantity, setQuantity] = useState(1);
@@ -22,22 +27,11 @@ const DetailProduct = () => {
     useEffect(() => {
         fetchProductById(params.id, setProduct)
         fetchProduct(4, 0, setOtherProduct)
-        // delay 2 sec
-        // setTimeout(() =>
-        //     , 2000)
     }, [params])
 
-    // useEffect(() => {
-    //     if (product) {
-    //         setTimeout(() => {
-    //             setDelayedImages(product.images);
-    //         }, 2000); // 2 seconds delay
-    //     }
-    // }, [product]);
-
     useEffect(() => {
-        console.log("product", product)
-        console.log("otherProduct", otherProduct)
+        // console.log("product", product)
+        // console.log("otherProduct", otherProduct)
     }, [product, otherProduct])
 
 
@@ -51,19 +45,6 @@ const DetailProduct = () => {
         }
     }
 
-    /* 
-    {
-                "id": "product-YgLywjzTpgL6z2gM",
-                "name": "1721185958 - Product",
-                "price": 10000,
-                "description": "contoh deskripsi",
-                "images": [
-                    "http://localhost:3000/upload/images/17211558101333b07fea5-0143-479b-8bd9-fd2f103f8dea.jpg"
-                ],
-                "rating": "5.00"
-    }
-     */
-
     const handleAnchorClick = (event, targetId) => {
         event.preventDefault();
         const targetElement = document.getElementById(targetId);
@@ -73,12 +54,21 @@ const DetailProduct = () => {
     }
 
     const handleAddToCart = () => {
-        console.log("add to cart")
-        const addToCartRequest = {
-            orderQuantity: quantity,
-            productId: product.id
+        // console.log("add to cart")
+        if (isLogin) {
+            const addToCartRequest = {
+                orderQuantity: quantity,
+                productId: product.id
+            }
+            addToCart(addToCartRequest).then((res) => {
+                if (res) {
+                    setBadge(badge + 1)
+                }
+            })
+        } else {
+            ToastWarning("Silahkan login terlebih dahulu")
+            navigate('/login')
         }
-        addToCart(addToCartRequest)
     }
 
     // replace image function

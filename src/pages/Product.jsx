@@ -15,16 +15,16 @@ const Product = () => {
     useEffect(() => {
         console.log("role", getRoleId())
         if (getRoleId() == 1) {
-            console.log("masuk")
+            // console.log("masuk")
             setIsAdmin(true)
         } else {
-            console.log("gak masuk")
+            // console.log("gak masuk")
             setIsAdmin(false)
         }
     }, [])
 
     useEffect(() => {
-        console.log("cekk", isAdmin)
+        // console.log("cekk", isAdmin)
     }, [isAdmin])
 
     useEffect(() => {

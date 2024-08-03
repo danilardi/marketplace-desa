@@ -1,8 +1,8 @@
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '../utils/FormatUtils';
-import { useEffect, useState } from 'react';
-import { fetchCart, updateCart } from '../utils/API/Cart';
+import { useEffect, useRef, useState } from 'react';
+import { deleteCart, fetchCart, updateCart } from '../utils/API/Cart';
 import { getBaseURLWithPrefix } from '../utils/Helper';
 import { debounce } from 'lodash';
 import { CheckoutDataModal } from '../components/CartPage';
@@ -16,9 +16,15 @@ const Cart = () => {
     const [selectedCartItems, setSelectedCartItems] = useState([]);
     const [showCheckoutDataModal, setShowCheckoutDataModal] = useState(false);
 
+    const cartItemsRef = useRef(cartItems);
+
     useEffect(() => {
         fetchCart(setCartItems);
     }, []);
+
+    useEffect(() => {
+        cartItemsRef.current = cartItems;
+    }, [cartItems]);
 
     useEffect(() => {
         let total = 0;
@@ -41,8 +47,9 @@ const Cart = () => {
 
     const handleOnCLick = () => {
         // console.log(new UpdateUserRequest("user-1", "Rizky", "sdsf", "sdf"));
-        getUser();
+        // getUser();
         // getProvince();
+        console.log("cart", cartItems);
     }
 
     const handleCheckout = (data, items) => {
@@ -56,20 +63,33 @@ const Cart = () => {
         window.open(url, '_blank');
     }
 
-    const debouncedUpdateCart = debounce((index) => {
-        // console.log('debouncedUpdateCart', index, cartItems[index].id);
+    const handleDeleteItem = (id) => {
+        deleteCart(id).then((res) => {
+            if (res) {
+                // console.log("Deleted");
+                fetchCart(setCartItems);
+            }
+        });
+    }
+
+    // Use useRef to store the debounced function
+    const debouncedUpdateCartRef = useRef(debounce((index) => {
+
+        const currentCartItems = cartItemsRef.current;
+        // console.log("cart", currentCartItems);  
         const updateRequest = {
-            id: cartItems[index].id,
-            orderQuantity: cartItems[index].quantity
+            id: currentCartItems[index].id,
+            orderQuantity: currentCartItems[index].quantity
         }
         updateCart(updateRequest);
-    }, 1000)
+
+    }, 1000));
 
     const incrementQuantity = (index) => {
         const newCartItems = [...cartItems];
         newCartItems[index].quantity += 1;
         setCartItems(newCartItems);
-        debouncedUpdateCart(index);
+        debouncedUpdateCartRef.current(index);
     };
 
     const decrementQuantity = (index) => {
@@ -77,7 +97,7 @@ const Cart = () => {
             const newCartItems = [...cartItems];
             newCartItems[index].quantity -= 1;
             setCartItems(newCartItems);
-            debouncedUpdateCart(index);
+            debouncedUpdateCartRef.current(index);
         }
     };
 
@@ -94,7 +114,7 @@ const Cart = () => {
                     <li><span className="inline-flex items-center gap-2">Keranjang</span></li>
                 </ul>
             </div>
-            {/* <Button className="!px-4 !py-2" severity='danger' onClick={handleOnCLick}>Testing</Button> */}
+            <Button className="!px-4 !py-2" severity='danger' onClick={handleOnCLick}>Testing</Button>
             <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 py-4">
                 {/* Items */}
                 <div className="lg:basis-9/12 border rounded-md shadow-md bg-white px-4 pt-2 overflow-x-auto">
@@ -173,11 +193,6 @@ const Cart = () => {
                                                 outlined
                                                 className='p-button-icon-only size-8'
                                                 onClick={() => {
-                                                    // if (item.quantity > 1) {
-                                                    // let _cartItems = [...cartItems];
-                                                    // _cartItems[index].quantity -= 1;
-                                                    // setCartItems(_cartItems);
-                                                    // debouncedQuantity(index);}
                                                     decrementQuantity(index);
                                                 }}
                                             >
@@ -188,10 +203,6 @@ const Cart = () => {
                                                 rounded
                                                 className='p-button-icon-only size-8'
                                                 onClick={() => {
-                                                    // let _cartItems = [...cartItems];
-                                                    // _cartItems[index].quantity += 1;
-                                                    // setCartItems(_cartItems);
-                                                    // debouncedQuantity(index);
                                                     incrementQuantity(index);
                                                 }}
                                             >
@@ -201,7 +212,7 @@ const Cart = () => {
                                     </td>
                                     <td className='td-default text-center'>{formatCurrency(item.price * item.quantity)}</td>
                                     <td className='td-default'>
-                                        <Button className="!px-4 !py-2" severity='danger'>
+                                        <Button className="!px-4 !py-2" severity='danger' onClick={()=>handleDeleteItem(item.id)}>
                                             <span className='text-sm'>Hapus</span>
                                         </Button>
                                     </td>

@@ -74,3 +74,8 @@ export const ToastError = (message) => Toast.fire({
     icon: "error",
     title: `${message || "Error"}`
 });
+
+export const ToastWarning = (message) => Toast.fire({
+    icon: "warning",
+    title: `${message || "Warning"}`
+});

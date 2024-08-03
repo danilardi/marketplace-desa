@@ -1,43 +1,85 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { fetchProduct } from "../utils/API/Product"
 import CardProduct from "../components/CardProduct"
 import { Button } from "primereact/button"
+import { set } from "lodash"
 
 const Home = () => {
+    const navigate = useNavigate()
+
     const [otherProduct, setOtherProduct] = useState(null)
-    const [indexBanner, setIndexBanner] = useState(0)
+    const [indexBanner, setIndexBanner] = useState(1)
     const banner = [
-        `https://picsum.photos/1700/360?random=${Math.random()}`,
-        `https://picsum.photos/1700/360?random=${Math.random()}`,
-        `https://picsum.photos/1700/360?random=${Math.random()}`,
-        `https://picsum.photos/1700/360?random=${Math.random()}`
+        `https://picsum.photos/1700/360?random=${3}`,
+        `https://picsum.photos/1700/360?random=${0}`,
+        `https://picsum.photos/1700/360?random=${1}`,
+        `https://picsum.photos/1700/360?random=${2}`,
+        `https://picsum.photos/1700/360?random=${3}`,
+        `https://picsum.photos/1700/360?random=${0}`,
     ]
 
-    const navigate = useNavigate()
+    const indexBannerRef = useRef(indexBanner);
+    const carouselRef = useRef(null);
 
     useEffect(() => {
         fetchProduct(4, 0, setOtherProduct)
     }, [])
 
-    const handleAnchorClick = (event, targetId) => {
-        event.preventDefault();
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    useEffect(() => {
+        handleCarouselChange(1, 'instant')
+        const carousel = carouselRef.current;
+        const handleScroll = () => {
+            let newIndex = (carousel.scrollLeft / carousel.clientWidth);
+            if (Number(newIndex.toFixed(2)) == newIndex.toFixed(0)) {
+                setIndexBanner(Number(newIndex.toFixed(0)));
+            }
+        }
+        carousel.addEventListener('scroll', handleScroll);
+        return () => {
+            carousel.removeEventListener('scroll', handleScroll);
+        }
+    }, []);
+
+    useEffect(() => {
+        console.log("indexBanner", indexBanner)
+        indexBannerRef.current = indexBanner;
+        if (indexBanner == banner.length - 1) {
+            setIndexBanner(1)
+            handleCarouselChange(1, 'instant')
+        } else if (indexBanner == 0) {
+            setIndexBanner(banner.length - 2)
+            handleCarouselChange(banner.length - 2, 'instant')
+        } 
+        let autoRunBannerRef = setTimeout(() => {
+            console.log("runTimeout", indexBannerRef.current)
+            handleCarouselChange(indexBannerRef.current + 1)
+        }, 3000)
+        return () => {
+            clearTimeout(autoRunBannerRef);
+        }
+    }, [indexBanner]);
+
+    const handleCarouselChange = (index, behavior = 'smooth') => {
+        const targetElement = document.getElementById(`slide${index}`);
+        const carousel = carouselRef.current;
+        if (targetElement && carousel) {
+            const targetPosition = targetElement.offsetLeft;
+            carousel.scrollTo({ left: targetPosition, behavior: behavior });
         }
     }
 
     const replaceImage = (error) => {
-        //replacement of broken Image
-        // error.target.src = "/src/assets/image/placeholder.png";
-        // error.target.className = "absolute w-full h-full object-contain"
         error.target.src = `https://picsum.photos/1700/360?random=${Math.random()}`;
+    }
+
+    const handleClick = () => {
+        console.log("index", indexBanner)
     }
 
     return (
         <>
-            {/* breadcumbs */}
+            {/* breadcrumbs */}
             <div className="breadcrumbs text-md py-4">
                 <ul>
                     <li>
@@ -47,33 +89,30 @@ const Home = () => {
                     </li>
                 </ul>
             </div>
+
+            {/* <Button className="btn btn-primary text-white" onClick={handleClick}>Testing</Button> */}
             {/* banner */}
             <div className="flex w-full h-[360px] justify-center items-center shadow-md">
-                <a className="btn btn-circle btn-secondary text-white z-20 -mx-6" onClick={(e) => {
+                <a className="btn btn-circle btn-secondary text-white z-20 -mx-6" onClick={() => {
                     let newIndex = indexBanner - 1
                     if (newIndex < 0) newIndex = banner.length - 1
-                    setIndexBanner(newIndex)
-                    handleAnchorClick(e, `slide${indexBanner}`)
+                    handleCarouselChange(newIndex)
                 }}>❮</a>
-                <div className="carousel w-full h-[360px] rounded-lg z-0">
+                <div className="carousel w-full h-[360px] rounded-lg z-0" ref={carouselRef}>
                     {banner.map((image, index) => (
                         <div key={index} id={`slide${index}`} className="carousel-item w-full z-0">
                             <img
                                 src={`${image}`}
                                 className="w-full h-full object-fill"
-                                onError={replaceImage} />
+                                alt={index} />
                         </div>
                     ))}
                 </div>
-                <a className="btn btn-circle btn-secondary text-white z-20 -mx-6" onClick={(e) => {
+                <a className="btn btn-circle btn-secondary text-white z-20 -mx-6" onClick={() => {
                     let newIndex = indexBanner + 1
                     if (newIndex >= banner.length) newIndex = 0
-                    setIndexBanner(newIndex)
-                    handleAnchorClick(e, `slide${indexBanner}`)
+                    handleCarouselChange(newIndex)
                 }}>❯</a>
-                {/* <div className="flex justify-between items-center absolute left-0 right-0 w-full h-[360px]">
-                    
-                </div> */}
             </div>
             {/* profile */}
             <div className="card card-compact shadow-xl rounded-xl mt-4">

@@ -37,7 +37,7 @@ export const register = async (body) => {
 export const refreshToken = async (body) => {
     try {
         const res = await Api.put(`/authentications`, body);
-        console.log("cekk", res);
+        // console.log("cekk", res);
         if (res && res.status === "success") {
             if (res.data) {
                 setAccessToken(res.data.accessToken);
@@ -52,7 +52,7 @@ export const refreshToken = async (body) => {
 export const getUser = async () => {
     try {
         const res = await Api.get(`/users`);
-        console.log("getUser", res.data);
+        // console.log("getUser", res.data);
         if (res && res.status === "success") {
             return res;
         }
@@ -63,9 +63,9 @@ export const getUser = async () => {
 
 export const updateUser = async (body) => {
     try {
-        console.log("body", body);
+        // console.log("body", body);
         const res = await Api.put(`/users`, body);
-        console.log("cekk", res);
+        // console.log("cekk", res);
         // if (res && res.status === "success") {
         //     ToastSuccess("Update Success");
         //     return res;

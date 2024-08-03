@@ -1,22 +1,31 @@
 import { Link, useLocation } from "react-router-dom"
 import PropTypes from 'prop-types'
-import { useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { getAccessToken, removeAuth } from "../utils/AuthUtils"
 import { getUser } from "../utils/API/Auth"
 import { fetchCart } from "../utils/API/Cart"
 import { Badge } from 'primereact/badge'
 // import { useEffect, useState } from "react"
 
+const NavbarContext = createContext({})
+
 const Navbar = ({ children }) => {
     const location = useLocation()
     const [isLogin, setIsLogin] = useState(false)
     const [user, setUser] = useState({ fullname: '' })
     const [badge, setBadge] = useState(0)
-
+    
+    // Context value
+    const contextValue = {
+        badge,
+        setBadge,
+        isLogin,
+    };
 
     const isActivePage = (currentRoute) => {
         return currentRoute === location.pathname
     }
+
 
     useEffect(() => {
         // console.log('cek', getAccessToken())
@@ -37,7 +46,7 @@ const Navbar = ({ children }) => {
                 console.log(err)
             })
             fetchCart().then((res) => {
-                console.log('cart', res)
+                // console.log('cart', res)
                 if (res?.wishlist?.length > 0) setBadge(res.wishlist.length)
             }).catch((err) => {
                 console.log(err)
@@ -46,7 +55,7 @@ const Navbar = ({ children }) => {
     }, [isLogin])
 
     useEffect(() => {
-        console.log('user', user, badge)
+        // console.log('user', user, badge)
     }, [user, badge])
 
     const handleLogout = () => {
@@ -55,11 +64,12 @@ const Navbar = ({ children }) => {
         window.location.reload()
     }
 
+
     return (
-        <>
+        <NavbarContext.Provider value={contextValue}>
             <div className="flex flex-col h-screen overflow-auto scrollbar-hide">
                 {/* Navbar */}
-                <div className="navbar bg-primary min-h-12 px-24 py-0 text-white fixed z-50">
+                <div className="navbar bg-primary min-h-12 px-32 py-0 text-white fixed z-50">
                     <div className="navbar-start flex py-1">
                         <Link to='/' className="btn btn-ghost text-xl py-0 px-2 ">Mekarsari Mart</Link>
                     </div>
@@ -106,12 +116,12 @@ const Navbar = ({ children }) => {
                     </div>
                 </div>
                 {/* Page content here */}
-                <div className="grow lg:px-24 py-8 px-4 bg-slate-50 mt-8">
+                <div className="grow lg:px-32 py-8 px-4 bg-slate-50 mt-8">
                     {children}
                 </div>
                 {/* footer */}
                 <div className="divider mb-0 mt-0 h-8 divide-slate-400"></div>
-                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-24 ">
+                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-32 ">
                     <aside>
                         <svg
                             width="50"
@@ -173,12 +183,14 @@ const Navbar = ({ children }) => {
                     <p>Copyright &copy; 2024 Company</p>
                 </div> */}
             </div >
-        </>
+        </NavbarContext.Provider>
     )
 }
 
 Navbar.propTypes = {
     children: PropTypes.node.isRequired,
 };
+
+export const useNavbar = () => useContext(NavbarContext);
 
 export default Navbar

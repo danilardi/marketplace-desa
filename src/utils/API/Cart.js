@@ -5,7 +5,7 @@ import HandleNotifError from "../HandleNotifError";
 export const fetchCart = async (setFunction) => {
     try {
         const res = await Api.get(`/wishlist`);
-        // console.log(res);
+        // console.log("fetchCart", res);
         if (res.status === 'success') {
             if (setFunction) {
                 // balikkan urutan wishlist
@@ -27,6 +27,7 @@ export const addToCart = async ({ orderQuantity, productId }) => {
         // console.log("res", res);
         if (res.status === 'success') {
             ToastSuccess("Added to cart");
+            return true
         }
     } catch (error) {
         console.log(error);
@@ -45,22 +46,27 @@ export const updateCart = async ({ id, orderQuantity }) => {
         console.log("res", res);
         if (res.status === 'success') {
             // ToastSuccess("Updated cart");
+            return true
         }
     } catch (error) {
         console.log(error);
+        return false
         // HandleNotifError(error.response);
     }
 }
 
 export const deleteCart = async (id) => {
     try {
+        console.log("id", id);
         const res = await Api.delete(`/wishlist/${id}`);
         // console.log("res", res);
         if (res.status === 'success') {
             ToastSuccess("Deleted from cart");
+            return true
         }
     } catch (error) {
-        HandleNotifError(error.response);
+        console.log(error);
+        // HandleNotifError(error.response);
     }
 }
 

@@ -57,7 +57,7 @@ const CardProduct = ({ product }) => {
 }
 
 CardProduct.propTypes = {
-    product: PropTypes.node.isRequired,
+    product: PropTypes.any.isRequired,
 };
 
 export default CardProduct
