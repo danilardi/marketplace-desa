@@ -2,8 +2,8 @@ import { Button } from "primereact/button"
 import { InputText } from "primereact/inputtext"
 import { useState } from "react"
 import { login } from "../utils/API/Auth"
-import { IconField } from "primereact/IconField"
-import { InputIcon } from "primereact/inputicon"
+import { IconField } from 'primereact/iconfield';
+import { InputIcon } from 'primereact/inputicon';
 import { ToastSuccess } from '../utils/AlertNotification'
 import { useNavigate } from "react-router-dom"
 
