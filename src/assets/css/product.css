@@ -1,13 +1,8 @@
-.img-container {
-    height: 200px;
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    padding: 1rem 1rem;
 }
 
-.img-list-product {
-    object-fit: fill;
+.p-tabview .p-tabview-panels {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
 }
-
-.no-img-list-product {
-    width: 100px;
-    height: 100px;
-}
-

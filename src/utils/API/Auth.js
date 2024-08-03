@@ -1,30 +1,76 @@
-export function setCookie(cname, cvalue, exphours) {
-  const d = new Date();
-  d.setTime(d.getTime() + exphours * 60 * 60 * 1000);
-  let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+import HandleNotifError from "../HandleNotifError";
+import Api from "../Api";
+import { removeAuth, setAccessToken, setRefreshToken, setRoleId } from "../AuthUtils";
+import { ToastError, ToastSuccess } from "../AlertNotification";
+
+export const login = async (body) => {
+    try {
+        const res = await Api.post(`/authentications`, body);
+        // console.log("cekk", res);
+        if (res && res.status === "success") {
+            // ToastSuccess("Login Success");
+            if (res.data) {
+                setAccessToken(res.data.accessToken);
+                setRefreshToken(res.data.refreshToken);
+                setRoleId(res.data.roleId);
+            }
+            return res;
+        }
+    } catch (error) {
+        HandleNotifError(error);
+    }
 }
 
-export function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) === " ") {
-      c = c.substring(1);
+export const register = async (body) => {
+    try {
+        const res = await Api.post(`/users`, body);
+        // console.log("cekk", res);
+        if (res && res.status === "success") {
+            ToastSuccess("Register Success");
+            return true;
+        }
+    } catch (error) {
+        HandleNotifError(error);
     }
-    if (c.indexOf(name) === 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
 }
 
-export function getAuthToken() {
-  if (getCookie("auth")) {
-    const loggedInUser = JSON.parse(getCookie("auth"));
-    return loggedInUser.token;
-  }
-  return null;
+export const refreshToken = async (body) => {
+    try {
+        const res = await Api.put(`/authentications`, body);
+        console.log("cekk", res);
+        if (res && res.status === "success") {
+            if (res.data) {
+                setAccessToken(res.data.accessToken);
+            }
+        }
+    } catch (error) {
+        removeAuth();
+        // HandleNotifError(error);
+    }
+}
+
+export const getUser = async () => {
+    try {
+        const res = await Api.get(`/users`);
+        console.log("getUser", res.data);
+        if (res && res.status === "success") {
+            return res;
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updateUser = async (body) => {
+    try {
+        console.log("body", body);
+        const res = await Api.put(`/users`, body);
+        console.log("cekk", res);
+        // if (res && res.status === "success") {
+        //     ToastSuccess("Update Success");
+        //     return res;
+        // }
+    } catch (error) {
+        HandleNotifError(error);
+    }
 }
