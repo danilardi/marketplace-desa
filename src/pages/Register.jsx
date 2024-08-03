@@ -1,7 +1,7 @@
 import { Button } from "primereact/button"
 import { InputText } from "primereact/inputtext"
-import { InputIcon } from "primereact/inputicon"
-import { IconField } from "primereact/IconField"
+import { IconField } from 'primereact/iconfield';
+import { InputIcon } from 'primereact/inputicon';
 import { useState } from "react"
 import { register } from "../utils/API/Auth"
 import { useNavigate } from "react-router-dom"
