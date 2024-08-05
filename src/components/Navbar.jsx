@@ -68,7 +68,7 @@ const Navbar = ({ children }) => {
 
     return (
         <NavbarContext.Provider value={contextValue}>
-            <div className="flex flex-col h-screen overflow-auto scrollbar-hide mb-10">
+            <div className="flex flex-col h-screen overflow-auto scrollbar-hide">
                 {/* Navbar */}
                 <div className="navbar bg-primary min-h-12 ps-4 md:px-12 xl:px-32 py-0 text-white fixed z-50">
                     <div className="flex-1 flex py-1">
@@ -128,7 +128,7 @@ const Navbar = ({ children }) => {
                 </div>
                 {/* footer */}
                 <div className="divider mb-0 mt-0 h-0 divide-slate-400"></div>
-                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-32">
+                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 xl:px-32 md:px-12">
                     <aside>
                         <img src={LogoWithTextBlack} alt="logo" className="h-10" />
                         <p>
