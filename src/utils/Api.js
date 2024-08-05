@@ -21,7 +21,7 @@ const onRequestSuccess = (config) => {
 const onRequestError = (error) => Promise.reject(error)
 const onResponseSuccess = (response) => response.data
 const onResponseError = (error) => {
-  // console.log('error', getAccessToken())
+  // // console.log('error', getAccessToken())
   if (error.response?.data.statusCode === 401 && getAccessToken()) {
     refreshToken({ refreshToken: getRefreshToken() })
   } else if (error.response?.data.statusCode === 401 && !getAccessToken()) {

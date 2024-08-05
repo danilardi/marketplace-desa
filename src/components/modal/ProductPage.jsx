@@ -16,13 +16,13 @@ export const AddProductModal = ({ show, setShow, handler }) => {
     const [file, setFile] = useState([]);
 
     useEffect(() => {
-        // console.log("file update", file);
+        // // console.log("file update", file);
     }, [file]);
 
     const handlerAddImage = (e) => {
-        // console.log("e", e.target.files);
+        // // console.log("e", e.target.files);
         let _file = [...file, ...e.target.files];
-        // console.log("_file", _file);
+        // // console.log("_file", _file);
         setFile(_file);
     }
 
@@ -132,7 +132,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
                 {/* <Button severity="warning" onClick={() => {
-                    // console.log('file', dataProduct);
+                    // // console.log('file', dataProduct);
                     handler(dataProduct);
                 }} ><span>Cek</span></Button> */}
                 <Button severity="success" onClick={() => {
@@ -156,13 +156,13 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
         fetchProductById(selectedProductId, setDataProduct);
     }, [show]);
 
-    
+
     useEffect(() => {
-        console.log("dataProduct", dataProduct);
+        // console.log("dataProduct", dataProduct);
     }, [dataProduct]);
 
     useEffect(() => {
-        // console.log("file update", file);
+        // // console.log("file update", file);
     }, [file]);
 
     const handlerAddImage = (e) => {
@@ -183,7 +183,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
             });
         });
         await Promise.all(uploadPromises);
-        console.log("dataProduct", dataProduct);
+        // console.log("dataProduct", dataProduct);
         handler(dataProduct);
         setShow(false);
     }
@@ -292,7 +292,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
                 <Button severity="warning" onClick={() => {
-                    console.log('cek', file);
+                    // console.log('cek', file);
                 }} ><span>Cek</span></Button>
                 <Button severity="success" onClick={() => {
                     handleEditProduct()

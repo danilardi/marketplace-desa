@@ -48,16 +48,16 @@ const Cart = () => {
      */
 
     const handleOnCLick = () => {
-        // console.log(new UpdateUserRequest("user-1", "Rizky", "sdsf", "sdf"));
+        // // console.log(new UpdateUserRequest("user-1", "Rizky", "sdsf", "sdf"));
         // getUser();
         // getProvince();
-        console.log("cart", cartItems);
+        // console.log("cart", cartItems);
     }
 
     const handleCheckout = (data, items) => {
         updateUser(new UpdateUserRequest(user.fullname, user.email, data.phonenumber, data.address.provinsi, data.address.kota, data.address.kecamatan, data.address.kelurahan, data.address.detail));
-        // console.log("Checkout data", data)
-        // console.log("Checkout items", items)
+        // // console.log("Checkout data", data)
+        // // console.log("Checkout items", items)
         const message = `Halo Kak, saya ${data.nama} mau pesan barang dengan detail sebagai berikut: \n\nNama: ${data.nama}\nEmail: ${data.email}\nNo. Telepon: ${data.phonenumber}\nAlamat: ${data.address.detail}, ${data.address.kelurahan}, ${data.address.kecamatan}, ${data.address.kota}, ${data.address.provinsi}\n\nBarang yang dipesan:\n${items.map((item, index) => `${index + 1}. ${item.name} - ${item.quantity} pcs - ${formatCurrency(item.price)}/pcs - total ${formatCurrency(item.price * item.quantity)}\n`).join('')}\nTotal: ${formatCurrency(totalPrice)}`;
         const noHp = '6285376279800';
         const url = `https://wa.me/${noHp}?text=${encodeURIComponent(message)}`;
@@ -67,7 +67,7 @@ const Cart = () => {
     const handleDeleteItem = (id) => {
         deleteCart(id).then((res) => {
             if (res) {
-                // console.log("Deleted");
+                // // console.log("Deleted");
                 fetchCart(setCartItems);
                 setBadge(badge - 1);
             }
@@ -78,7 +78,7 @@ const Cart = () => {
     const debouncedUpdateCartRef = useRef(debounce((index) => {
 
         const currentCartItems = cartItemsRef.current;
-        // console.log("cart", currentCartItems);  
+        // // console.log("cart", currentCartItems);  
         const updateRequest = {
             id: currentCartItems[index].id,
             orderQuantity: currentCartItems[index].quantity
@@ -247,7 +247,7 @@ const Cart = () => {
                                     _selectedCartItems.push(cartItems[index]);
                                 }
                             });
-                            // console.log(_selectedCartItems);
+                            // // console.log(_selectedCartItems);
                             setSelectedCartItems(_selectedCartItems);
                             setShowCheckoutDataModal(true);
                         }}>

@@ -52,7 +52,7 @@ const Register = () => {
         }
         const res = await register(registerRequest);
         setLoading(false)
-        // console.log("res", res)
+        // // console.log("res", res)
         if (res) {
             navigate('/login')
         }

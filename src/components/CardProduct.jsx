@@ -14,7 +14,7 @@ import Placeholder from '../assets/image/placeholder.png'
 
 const CardProduct = ({ product, handleDeleteProduct, handleEditProduct }) => {
     const navigate = useNavigate();
-    const {badge, setBadge, isLogin} = useNavbar()
+    const { badge, setBadge, isLogin } = useNavbar()
 
     const replaceImage = (error) => {
         error.target.className = "w-full h-full absolute object-contain"
@@ -22,7 +22,7 @@ const CardProduct = ({ product, handleDeleteProduct, handleEditProduct }) => {
     }
 
     const handleAddToCart = () => {
-        console.log("add to cart")
+        // // console.log("add to cart")
         if (isLogin) {
             const addToCartRequest = {
                 orderQuantity: 1,

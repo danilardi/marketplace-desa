@@ -37,8 +37,8 @@ const DetailProduct = () => {
     }, [params])
 
     useEffect(() => {
-        // console.log("product", product)
-        // console.log("otherProduct", otherProduct)
+        // // console.log("product", product)
+        // // console.log("otherProduct", otherProduct)
     }, [product, otherProduct])
 
 
@@ -62,7 +62,7 @@ const DetailProduct = () => {
     }
 
     const handleAddToCart = () => {
-        console.log("add to cart")
+        // console.log("add to cart")
         if (isLogin) {
             const addToCartRequest = {
                 orderQuantity: quantity,
@@ -96,7 +96,7 @@ const DetailProduct = () => {
     }
 
     const handleDeleteProduct = (id) => {
-        console.log("delete product", id)
+        // console.log("delete product", id)
         deleteProduct(id).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil menghapus produk")
@@ -156,7 +156,7 @@ const DetailProduct = () => {
                                 // href={`#item${index + 1}`}
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    console.log("index", index)
+                                    // console.log("index", index)
                                     handleCarouselChange(index)
                                 }}
                                 className="w-24 h-16 bg-white rounded-md carousel-item">

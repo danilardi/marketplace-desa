@@ -44,19 +44,19 @@ const Navbar = ({ children }) => {
             getUser().then((res) => {
                 setUser(res?.data)
             }).catch((err) => {
-                console.log(err)
+                // // console.log(err)
             })
             fetchCart().then((res) => {
-                // console.log('cart', res)
+                // // console.log('cart', res)
                 if (res?.wishlist?.length > 0) setBadge(res.wishlist.length)
             }).catch((err) => {
-                console.log(err)
+                // // console.log(err)
             })
         }
     }, [isLogin])
 
     useEffect(() => {
-        // console.log('user', user, badge)
+        // // console.log('user', user, badge)
     }, [user, badge])
 
     const handleLogout = () => {

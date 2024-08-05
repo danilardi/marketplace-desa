@@ -42,7 +42,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        // console.log("indexBanner", indexBanner)
+        // // console.log("indexBanner", indexBanner)
         indexBannerRef.current = indexBanner;
         if (indexBanner == banner.length - 1) {
             setIndexBanner(1)
@@ -52,7 +52,7 @@ const Home = () => {
             handleCarouselChange(banner.length - 2, 'instant')
         }
         let autoRunBannerRef = setTimeout(() => {
-            // console.log("runTimeout", indexBannerRef.current)
+            // // console.log("runTimeout", indexBannerRef.current)
             handleCarouselChange(indexBannerRef.current + 1)
         }, 3000)
         return () => {
@@ -74,7 +74,7 @@ const Home = () => {
     }
 
     const handleClick = () => {
-        console.log("index", indexBanner)
+        // console.log("index", indexBanner)
     }
 
     return (
