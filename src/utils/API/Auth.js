@@ -6,7 +6,7 @@ import { ToastError, ToastSuccess } from "../AlertNotification";
 export const login = async (body) => {
     try {
         const res = await Api.post(`/authentications`, body);
-        // console.log("cekk", res);
+        console.log("cekk", res);
         if (res && res.status === "success") {
             // ToastSuccess("Login Success");
             if (res.data) {
@@ -17,7 +17,8 @@ export const login = async (body) => {
             return res;
         }
     } catch (error) {
-        HandleNotifError(error);
+        console.log(error)
+        ToastError(error.data.message);
     }
 }
 

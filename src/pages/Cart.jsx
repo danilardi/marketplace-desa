@@ -188,7 +188,7 @@ const Cart = () => {
                                         {!item.images && <img src={`https://picsum.photos/400/200?random=${index}`} alt={item.name} className="h-16 image" />}
                                     </td>
                                     <td className='td-default w-full'>
-                                        <div className='flex flex-col w-full max-w-[300px]'>
+                                        <div className='flex flex-col w-full max-w-[200px]'>
                                             <p className='w-full text-ellipsis !overflow-hidden text-md font-bold'>{item.name}</p>
                                             <p className="text-ellipsis !overflow-hidden text-sm text-gray-500">{item.description}</p>
                                         </div>
@@ -238,7 +238,7 @@ const Cart = () => {
                     </div>
                     <div className="divider divider-base-300 mt-4"></div>
                     <Button
-                        // disabled={totalPrice === 0}
+                        disabled={totalPrice === 0}
                         className='w-full h-10'
                         onClick={() => {
                             let _selectedCartItems = [];

@@ -49,7 +49,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                 _data.nama = res.data.fullname;
                 _data.email = res.data.email;
                 _data.phonenumber = res.data.phonenumber;
-                if (res.data.address.length > 0) {
+                if (res.data?.address?.length > 0) {
                     console.log("masuk address");
                     _data.address.provinsi = res.data.address[0];
                     setSelectedProvinsi(listProvinsi.find((item) => item.name === _data.address.provinsi))
@@ -111,12 +111,13 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
     return (
         <Dialog
             visible={show}
-            style={{ width: "698px", height: "550px", top: "4rem", position: "fixed" }}
+            // style={{ width: "698px", height: "550px", top: "4rem", position: "fixed" }}
+            className="w-full px-5 md:px-0 md:w-[700px] md:h-[550px] top-12 fixed"
             onHide={() => setShow(false)}
             header="Checkout Produk"
         >
             <div className="container flex flex-wrap justify-around">
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Provinsi</h6>
                     {/* <AutoComplete
                         placeholder="e.g. JAGUNG BIASA WHL"
@@ -149,7 +150,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Kota</h6>
                     <Dropdown
                         value={selectedKota}
@@ -170,7 +171,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Kecamatan</h6>
                     <Dropdown
                         value={selectedKecamatan}
@@ -191,7 +192,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Kelurahan</h6>
                     <Dropdown
                         value={selectedKelurahan}
@@ -209,7 +210,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Detail Alamat</h6>
                     <InputText
                         value={data.address.detail}
@@ -222,7 +223,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Nama</h6>
                     <InputText
                         value={data.nama}
@@ -234,7 +235,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>Email</h6>
                     <InputText
                         value={data.email}
@@ -246,7 +247,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         className="w-full"
                     />
                 </div>
-                <div className="py-2 w-2/5">
+                <div className="py-2 w-full md:w-2/5">
                     <h6>No. Telp</h6>
                     <InputText
                         value={data.phonenumber}

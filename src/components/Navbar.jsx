@@ -6,6 +6,8 @@ import { getUser } from "../utils/API/Auth"
 import { fetchCart } from "../utils/API/Cart"
 import { Badge } from 'primereact/badge'
 import { Button } from "primereact/button"
+import LogoWithTextHorizontal from '../assets/image/logo with text horizontal.png'
+import LogoWithTextBlack from '../assets/image/logo with text black.png'
 // import { useEffect, useState } from "react"
 
 const NavbarContext = createContext({})
@@ -68,10 +70,10 @@ const Navbar = ({ children }) => {
         <NavbarContext.Provider value={contextValue}>
             <div className="flex flex-col h-screen overflow-auto scrollbar-hide mb-10">
                 {/* Navbar */}
-                <div className="navbar bg-primary min-h-12 ps-4 md:px-12 lg:px-32 py-0 text-white fixed z-50">
+                <div className="navbar bg-primary min-h-12 ps-4 md:px-12 xl:px-32 py-0 text-white fixed z-50">
                     <div className="flex-1 flex py-1">
                         <Link to='/' className="btn btn-ghost py-0 px-1">
-                            <img src="/src/assets/image/logo with text horizontal.png" alt="logo" className="h-10" />
+                            <img src={LogoWithTextHorizontal} alt="logo" className="h-10" />
                         </Link>
                     </div>
                     <div className="flex items-center">
@@ -121,14 +123,14 @@ const Navbar = ({ children }) => {
                     </div>
                 </div>
                 {/* Page content here */}
-                <div className="grow lg:px-32 md:px-12 py-8 px-4 bg-slate-50 mt-8">
+                <div className="grow xl:px-32 md:px-12 py-8 px-4 bg-slate-50 mt-8">
                     {children}
                 </div>
                 {/* footer */}
                 <div className="divider mb-0 mt-0 h-0 divide-slate-400"></div>
                 <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-32">
                     <aside>
-                        <img src="/src/assets/image/logo with text black.png" alt="logo" className="h-10" />
+                        <img src={LogoWithTextBlack} alt="logo" className="h-10" />
                         <p>
                             Desa Mekarsari Ltd.
                             <br />

@@ -1,6 +1,6 @@
 import { Button } from "primereact/button"
 import { InputText } from "primereact/inputtext"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { login } from "../utils/API/Auth"
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
@@ -14,8 +14,13 @@ const Login = () => {
     })
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [isPasswordValid, setIsPasswordValid] = useState(false)
 
     const navigate = useNavigate()
+
+    useEffect(() => {
+        setIsPasswordValid(account.password.length >= 8);
+    }, [account]);
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -64,6 +69,9 @@ const Login = () => {
                                     }}
                                     placeholder="Enter password here" />
                             </IconField>
+                            {(!isPasswordValid && account.password.length > 0) && (
+                                <small className="text-red-500">Kata sandi minimal 8 karakter</small>
+                            )}
                         </div>
                         <Button
                             type="submit"

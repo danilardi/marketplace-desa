@@ -10,6 +10,7 @@ import { deleteProduct } from '../utils/API/Product'
 import { ToastSuccess, ToastWarning } from '../utils/AlertNotification'
 import { addToCart } from '../utils/API/Cart'
 import { useNavbar } from './Navbar'
+import Placeholder from '../assets/image/placeholder.png'
 
 const CardProduct = ({ product, handleDeleteProduct, handleEditProduct }) => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const CardProduct = ({ product, handleDeleteProduct, handleEditProduct }) => {
 
     const replaceImage = (error) => {
         error.target.className = "w-full h-full absolute object-contain"
-        error.target.src = "/src/assets/image/placeholder.png";
+        error.target.src = Placeholder;
     }
 
     const handleAddToCart = () => {

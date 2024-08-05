@@ -2,7 +2,7 @@ import { Button } from "primereact/button"
 import { InputText } from "primereact/inputtext"
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { register } from "../utils/API/Auth"
 import { useNavigate } from "react-router-dom"
 
@@ -20,10 +20,25 @@ const Register = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [isUsernameValid, setIsUsernameValid] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
+    const [isPasswordValid, setIsPasswordValid] = useState(false);
+    const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
 
     const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
+
+    let regex = new RegExp(
+        "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ ]|(\\[ -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[ -Z^-~]*])"
+    );
+
+    useEffect(() => {
+        setIsUsernameValid(account.username.length >= 6);
+        setIsPasswordValid(account.password.length >= 8);
+        setIsEmailValid(regex.test(account.email));
+        setIsConfirmPasswordValid(account.password === account.confirm_password);
+    }, [account]);
 
     const handleRegister = async (e) => {
         e.preventDefault()
@@ -47,10 +62,10 @@ const Register = () => {
         <div className="flex flex-col items-center justify-center h-full mt-8">
             <div className="card shadow-lg w-96">
                 <div className="card-body">
-                    <h2 className="card-title">Register</h2>
+                    <h2 className="card-title">Pendaftaran Akun</h2>
                     <form action="" className="form-control mt-4">
-                        <div className="flex flex-col gap-2 mt-6">
-                            <label>Fullname</label>
+                        <div className="flex flex-col gap-2">
+                            <label>Nama Lengkap</label>
                             <InputText
                                 type="text"
                                 value={account.fullname}
@@ -59,8 +74,11 @@ const Register = () => {
                                     _account.fullname = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Enter fullname here"
+                                placeholder="Masukkan nama lengkap disini"
                             />
+                            {(account.fullname.length == 0) && (
+                                <small className="text-red-500">Nama tidak boleh kosong</small>
+                            )}
                         </div>
                         <div className="flex flex-col gap-2 mt-6">
                             <label>Username</label>
@@ -72,24 +90,31 @@ const Register = () => {
                                     _account.username = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Enter username here"
+                                placeholder="Masukkan username disini"
                             />
+                            {(!isUsernameValid && account.username.length > 0) && (
+                                <small className="text-red-500">Username minimal 6 karakter</small>
+                            )}
                         </div>
                         <div className="flex flex-col gap-2 mt-6">
                             <label>Email</label>
                             <InputText
                                 type="email"
+                                autoComplete="off"
                                 value={account.email}
                                 onChange={(e) => {
                                     let _account = { ...account }
                                     _account.email = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Enter email here"
+                                placeholder="Masukkan email disini"
                             />
+                            {(!isEmailValid && account.email.length > 0) && (
+                                <small className="text-red-500">Input harus berbentuk email</small>
+                            )}
                         </div>
                         <div className="flex flex-col gap-2 mt-6">
-                            <label>Password</label>
+                            <label>Kata Sandi</label>
                             <div className="flex gap-3">
                                 <IconField>
                                     <InputIcon className={showPassword ? "pi pi-eye" : "pi pi-eye-slash"} onClick={() => setShowPassword(!showPassword)}> </InputIcon>
@@ -101,13 +126,16 @@ const Register = () => {
                                             _account.password = e.target.value
                                             setAccount(_account)
                                         }}
-                                        placeholder="Enter password here"
+                                        placeholder="Masukkan kata sandi disini"
                                     />
                                 </IconField>
                             </div>
+                            {(!isPasswordValid && account.password.length > 0) && (
+                                <small className="text-red-500">Kata sandi minimal 8 karakter</small>
+                            )}
                         </div>
                         <div className="flex flex-col gap-2 mt-6">
-                            <label>Confirm Password</label>
+                            <label>Konfirmasi Kata Sandi</label>
                             <div className="flex gap-3">
                                 <IconField>
                                     <InputIcon className={showConfirmPassword ? "pi pi-eye" : "pi pi-eye-slash"} onClick={() => setShowConfirmPassword(!showConfirmPassword)}></InputIcon>
@@ -119,12 +147,16 @@ const Register = () => {
                                             _account.confirm_password = e.target.value
                                             setAccount(_account)
                                         }}
-                                        placeholder="Enter confirm password here"
+                                        placeholder="Masukkan konfirmasi kata sandi disini"
                                     />
                                 </IconField>
                             </div>
+                            {(!isConfirmPasswordValid && account.confirm_password.length > 0) && (
+                                <small className="text-red-500">Kata sandi harus sama</small>
+                            )}
                         </div>
                         <Button
+                            disabled={!(account.fullname.length > 0 && isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid)}
                             type="submit"
                             className="btn btn-primary text-white !mt-6"
                             onClick={handleRegister}
