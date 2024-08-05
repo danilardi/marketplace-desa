@@ -3,10 +3,9 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { useState, useEffect } from "react";
-import { getListKecamatan, getListKelurahan, getListKota, getListProvinsi } from "../utils/API/Address";
-import { capitalizeEachWord } from "../utils/Helper";
-import { getUser } from "../utils/API/Auth";
-import { list } from "postcss";
+import { getListKecamatan, getListKelurahan, getListKota, getListProvinsi } from "../../utils/API/Address";
+import { capitalizeEachWord } from "../../utils/Helper";
+import { getUser } from "../../utils/API/Auth";
 
 export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler }) => {
     // pembatas
@@ -41,31 +40,34 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
     }, []);
 
     useEffect(() => {
-        getUser().then(async (res) => {
-            const _data = { ...data };
-            _data.nama = res.data.fullname;
-            _data.email = res.data.email;
-            _data.phonenumber = res.data.phonenumber;
-            if (res.data.address.length > 0) {
-                _data.address.provinsi = res.data.address[0];
-                setSelectedProvinsi(listProvinsi.find((item) => item.name === _data.address.provinsi))
-                setSelectedKota(null)
-                setSelectedKecamatan(null)
-                setSelectedKelurahan(null)
-                _data.address.kota = res.data.address[1];
-                _data.address.kecamatan = res.data.address[2];
-                _data.address.kelurahan = res.data.address[3];
-                _data.address.detail = res.data.address[4];
-            }
-            // console.log("data", data);
-            // console.log("_data", _data);
-            setData(_data);
-        });
+        console.log("show", show);
+        if (show) {
+            console.log("masuk show");
+            getUser().then(async (res) => {
+                console.log("res", res);
+                const _data = { ...data };
+                _data.nama = res.data.fullname;
+                _data.email = res.data.email;
+                _data.phonenumber = res.data.phonenumber;
+                if (res.data.address.length > 0) {
+                    console.log("masuk address");
+                    _data.address.provinsi = res.data.address[0];
+                    setSelectedProvinsi(listProvinsi.find((item) => item.name === _data.address.provinsi))
+                    _data.address.kota = res.data.address[1];
+                    _data.address.kecamatan = res.data.address[2];
+                    _data.address.kelurahan = res.data.address[3];
+                    _data.address.detail = res.data.address[4];
+                }
+                // console.log("data", data);
+                // console.log("_data", _data);
+                setData(_data);
+            });
+        }
     }, [show]);
 
     useEffect(() => {
         if (selectedProvinsi) {
-            // console.log("selectedProvinsi", selectedProvinsi);
+            console.log("selectedProvinsi", selectedProvinsi);
             getListKota(selectedProvinsi.id).then((res) => {
                 setListKota(res);
             });
@@ -74,7 +76,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
 
     useEffect(() => {
         if (selectedKota) {
-            // console.log("selectedKota", selectedKota);
+            console.log("selectedKota", selectedKota);
             getListKecamatan(selectedKota.id).then((res) => {
                 setListKecamatan(res);
             });
@@ -83,7 +85,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
 
     useEffect(() => {
         if (selectedKecamatan) {
-            // console.log("selectedKecamatan", selectedKecamatan);
+            console.log("selectedKecamatan", selectedKecamatan);
             getListKelurahan(selectedKecamatan.id).then((res) => {
                 setListKelurahan(res);
             });
@@ -109,7 +111,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
     return (
         <Dialog
             visible={show}
-            style={{ width: "698px", height: "550px" }}
+            style={{ width: "698px", height: "550px", top: "4rem", position: "fixed" }}
             onHide={() => setShow(false)}
             header="Checkout Produk"
         >
@@ -258,6 +260,15 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                 </div>
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
+            {/* <Button
+                    severity="warning"
+                    onClick={() => {
+                        console.log(data);
+                    }}
+                    className="!px-3 !py-1"
+                >
+                    cek
+                </Button> */}
                 <Button
                     severity="danger"
                     onClick={() => {

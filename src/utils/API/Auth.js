@@ -51,6 +51,7 @@ export const refreshToken = async (body) => {
 
 export const getUser = async () => {
     try {
+        console.log("masuk getUser");
         const res = await Api.get(`/users`);
         // console.log("getUser", res.data);
         if (res && res.status === "success") {

@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 import { deleteCart, fetchCart, updateCart } from '../utils/API/Cart';
 import { getBaseURLWithPrefix } from '../utils/Helper';
 import { debounce } from 'lodash';
-import { CheckoutDataModal } from '../components/CartPage';
+import { CheckoutDataModal } from '../components/modal/CartPage';
 import { getUser, updateUser } from '../utils/API/Auth';
 import { UpdateUserRequest } from '../model/UserModel';
+import { useNavbar } from '../components/Navbar';
 
 const Cart = () => {
+    const { badge, setBadge, user } = useNavbar();
     const [cartItems, setCartItems] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedItems, setSelectedItems] = useState([]);
@@ -53,10 +55,9 @@ const Cart = () => {
     }
 
     const handleCheckout = (data, items) => {
-        updateUser(new UpdateUserRequest(data.nama, data.email, data.phonenumber, data.address.provinsi, data.address.kota, data.address.kecamatan, data.address.kelurahan, data.address.detail));
-
-        console.log("Checkout data", data)
-        console.log("Checkout items", items)
+        updateUser(new UpdateUserRequest(user.fullname, user.email, data.phonenumber, data.address.provinsi, data.address.kota, data.address.kecamatan, data.address.kelurahan, data.address.detail));
+        // console.log("Checkout data", data)
+        // console.log("Checkout items", items)
         const message = `Halo Kak, saya ${data.nama} mau pesan barang dengan detail sebagai berikut: \n\nNama: ${data.nama}\nEmail: ${data.email}\nNo. Telepon: ${data.phonenumber}\nAlamat: ${data.address.detail}, ${data.address.kelurahan}, ${data.address.kecamatan}, ${data.address.kota}, ${data.address.provinsi}\n\nBarang yang dipesan:\n${items.map((item, index) => `${index + 1}. ${item.name} - ${item.quantity} pcs - ${formatCurrency(item.price)}/pcs - total ${formatCurrency(item.price * item.quantity)}\n`).join('')}\nTotal: ${formatCurrency(totalPrice)}`;
         const noHp = '6285376279800';
         const url = `https://wa.me/${noHp}?text=${encodeURIComponent(message)}`;
@@ -68,6 +69,7 @@ const Cart = () => {
             if (res) {
                 // console.log("Deleted");
                 fetchCart(setCartItems);
+                setBadge(badge - 1);
             }
         });
     }
@@ -114,7 +116,7 @@ const Cart = () => {
                     <li><span className="inline-flex items-center gap-2">Keranjang</span></li>
                 </ul>
             </div>
-            <Button className="!px-4 !py-2" severity='danger' onClick={handleOnCLick}>Testing</Button>
+            {/* <Button className="!px-4 !py-2" severity='danger' onClick={handleOnCLick}>Testing</Button> */}
             <div className="flex flex-wrap lg:flex-nowrap justify-center gap-4 py-4">
                 {/* Items */}
                 <div className="lg:basis-9/12 border rounded-md shadow-md bg-white px-4 pt-2 overflow-x-auto">
@@ -135,6 +137,10 @@ const Cart = () => {
                                     scope='col'
                                     className='th-default text-left'>
                                     Produk
+                                </th>
+                                <th
+                                    scope='col'
+                                    className='th-default text-left'>
                                 </th>
                                 <th
                                     scope='col'
@@ -177,15 +183,17 @@ const Cart = () => {
                                             setSelectedItems(_selectedItems);
                                         }} />
                                     </td>
-                                    <td className='td-default flex items-center gap-2'>
+                                    <td className='td-default w-full'>
                                         {item.images && <img src={`${getBaseURLWithPrefix(item.images[0])}`} alt={item.name} className="h-16 image" />}
                                         {!item.images && <img src={`https://picsum.photos/400/200?random=${index}`} alt={item.name} className="h-16 image" />}
-                                        <div className='w-full overflow-hidden'>
-                                            <p className='text-ellipsis overflow-hidden w-full text-md'>{item.name}</p>
-                                            <p className="text-ellipsis overflow-hidden w-full text-sm text-gray-500">{item.description}</p>
+                                    </td>
+                                    <td className='td-default w-full'>
+                                        <div className='flex flex-col w-full max-w-[300px]'>
+                                            <p className='w-full text-ellipsis !overflow-hidden text-md font-bold'>{item.name}</p>
+                                            <p className="text-ellipsis !overflow-hidden text-sm text-gray-500">{item.description}</p>
                                         </div>
                                     </td>
-                                    <td className='td-default text-center'>{formatCurrency(item.price)}</td>
+                                    <td className='td-default text-center bg-white'>{formatCurrency(item.price)}</td>
                                     <td className='td-default'>
                                         <div className='flex-center gap-4 min-h-full'>
                                             <Button
@@ -212,7 +220,7 @@ const Cart = () => {
                                     </td>
                                     <td className='td-default text-center'>{formatCurrency(item.price * item.quantity)}</td>
                                     <td className='td-default'>
-                                        <Button className="!px-4 !py-2" severity='danger' onClick={()=>handleDeleteItem(item.id)}>
+                                        <Button className="!px-4 !py-2" severity='danger' onClick={() => handleDeleteItem(item.id)}>
                                             <span className='text-sm'>Hapus</span>
                                         </Button>
                                     </td>
@@ -230,7 +238,7 @@ const Cart = () => {
                     </div>
                     <div className="divider divider-base-300 mt-4"></div>
                     <Button
-                        disabled={totalPrice === 0}
+                        // disabled={totalPrice === 0}
                         className='w-full h-10'
                         onClick={() => {
                             let _selectedCartItems = [];

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { Navigate } from "react-router-dom";
-import { ToastError, ToastSuccess } from './AlertNotification';
+import { ToastError, ToastSuccess, ToastWarning } from './AlertNotification';
 
 export function setCookie(cname, cvalue, exphours) {
   const d = new Date();
@@ -46,18 +46,23 @@ export function setRoleId(roleId) {
 }
 
 export function getRoleId() {
+  if (!localStorage.getItem("roleId")) {
+    // ToastError("Role tidak ditemukan");
+    return 2;
+  }
   return localStorage.getItem("roleId");
 }
 
 export function removeAuth() {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
+  localStorage.removeItem("roleId");
 }
 
 export const IsLoggedIn = ({ children }) => {
   const loggedInUser = getAccessToken();
   if (!loggedInUser) 
-    ToastError("Silahkan login terlebih dahulu");
+    ToastWarning("Silahkan login terlebih dahulu");
   return loggedInUser ? children : <Navigate to="/login" />;
 };
 

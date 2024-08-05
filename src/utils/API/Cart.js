@@ -24,7 +24,7 @@ export const fetchCart = async (setFunction) => {
 export const addToCart = async ({ orderQuantity, productId }) => {
     try {
         const res = await Api.post(`/wishlist`, { orderQuantity: orderQuantity, productId: productId });
-        // console.log("res", res);
+        console.log("res", res);
         if (res.status === 'success') {
             ToastSuccess("Added to cart");
             return true
@@ -57,7 +57,7 @@ export const updateCart = async ({ id, orderQuantity }) => {
 
 export const deleteCart = async (id) => {
     try {
-        console.log("id", id);
+        // console.log("id", id);
         const res = await Api.delete(`/wishlist/${id}`);
         // console.log("res", res);
         if (res.status === 'success') {

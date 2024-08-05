@@ -5,6 +5,7 @@ import { getAccessToken, removeAuth } from "../utils/AuthUtils"
 import { getUser } from "../utils/API/Auth"
 import { fetchCart } from "../utils/API/Cart"
 import { Badge } from 'primereact/badge'
+import { Button } from "primereact/button"
 // import { useEffect, useState } from "react"
 
 const NavbarContext = createContext({})
@@ -14,12 +15,13 @@ const Navbar = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false)
     const [user, setUser] = useState({ fullname: '' })
     const [badge, setBadge] = useState(0)
-    
+
     // Context value
     const contextValue = {
         badge,
         setBadge,
         isLogin,
+        user,
     };
 
     const isActivePage = (currentRoute) => {
@@ -28,12 +30,9 @@ const Navbar = ({ children }) => {
 
 
     useEffect(() => {
-        // console.log('cek', getAccessToken())
         if (getAccessToken()) {
-            // console.log('login')
             setIsLogin(true)
         } else {
-            // console.log('not login')
             setIsLogin(false)
         }
     }, [location])
@@ -67,29 +66,32 @@ const Navbar = ({ children }) => {
 
     return (
         <NavbarContext.Provider value={contextValue}>
-            <div className="flex flex-col h-screen overflow-auto scrollbar-hide">
+            <div className="flex flex-col h-screen overflow-auto scrollbar-hide mb-10">
                 {/* Navbar */}
-                <div className="navbar bg-primary min-h-12 px-32 py-0 text-white fixed z-50">
-                    <div className="navbar-start flex py-1">
-                        <Link to='/' className="btn btn-ghost text-xl py-0 px-2 ">Mekarsari Mart</Link>
+                <div className="navbar bg-primary min-h-12 ps-4 md:px-12 lg:px-32 py-0 text-white fixed z-50">
+                    <div className="flex-1 flex py-1">
+                        <Link to='/' className="btn btn-ghost py-0 px-1">
+                            <img src="/src/assets/image/logo with text horizontal.png" alt="logo" className="h-10" />
+                        </Link>
                     </div>
-                    {/* <div className="navbar-center flex">
-                        <input type="text" placeholder="Search" className="input input-bordered input-sm" />
-                    </div> */}
-                    <div className="navbar-end flex items-center">
+                    <div className="flex items-center">
                         <ul className="menu menu-horizontal px-1 items-center">
                             {/* Navbar menu content here */}
-                            <li className={isActivePage('/') ? 'bg-secondary rounded-md mx-1' : 'mx-1'}>
-                                <Link to='/'>Home</Link>
+                            <li className={isActivePage('/') ? 'bg-secondary rounded-md mx-1 hidden sm:flex' : 'mx-1 hidden sm:flex'}>
+                                <Link to='/'>
+                                    <i className="pi fi-rs-home text-lg"> </i>
+                                </Link>
                                 {/* <NavLink to='/'>Home</NavLink> */}
                             </li>
-                            <li className={isActivePage('/product') ? 'bg-secondary rounded-md mx-1' : 'mx-1'}>
-                                <Link to='/product'>Produk</Link>
+                            <li className={isActivePage('/product') ? 'bg-secondary rounded-md mx-1 hidden sm:flex' : 'mx-1 hidden sm:flex'}>
+                                <Link to='/product'>
+                                    <i className="pi fi-tr-boxes text-lg"> </i>
+                                </Link>
                             </li>
-                            <li className={isActivePage('/cart') ? 'bg-secondary rounded-md mx-1' : 'mx-1'}>
+                            <li className={isActivePage('/cart') ? 'bg-secondary rounded-md mx-1 hidden sm:flex' : 'mx-1 hidden sm:flex'}>
                                 <Link to='/cart'>
-                                    <i className="pi pi-shopping-cart text-lg"> </i>
-                                    <Badge value={badge} severity="info" />
+                                    <i className="pi pi-shopping-cart text-lg mb-0.5"></i>
+                                    <Badge value={badge} severity="info" className="mb-0.5" />
                                 </Link>
                             </li>
                             {!isLogin && <li className={isActivePage('/login') ? 'bg-secondary rounded-md mx-1' : 'mx-1'}>
@@ -104,10 +106,13 @@ const Navbar = ({ children }) => {
                                         <span className="pe-1">{user.fullname}</span>
                                         <ul
                                             tabIndex={0}
-                                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow text-black top-8">
+                                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-32 p-2 shadow text-black top-8">
                                             {/* <li><a>Nama : {}</a></li> */}
                                             {/* <li><a>Profile</a></li> */}
-                                            <li><a onClick={handleLogout} className="hover:bg-red-500">Logout</a></li>
+                                            <li>
+                                                {/* <a onClick={handleLogout} className="hover:bg-red-500" >Logout</a> */}
+                                                <Button onClick={handleLogout} className="text-sm" severity="danger">Logout</Button>
+                                            </li>
                                         </ul>
                                     </div>
                                 </li>
@@ -116,32 +121,22 @@ const Navbar = ({ children }) => {
                     </div>
                 </div>
                 {/* Page content here */}
-                <div className="grow lg:px-32 py-8 px-4 bg-slate-50 mt-8">
+                <div className="grow lg:px-32 md:px-12 py-8 px-4 bg-slate-50 mt-8">
                     {children}
                 </div>
                 {/* footer */}
-                <div className="divider mb-0 mt-0 h-8 divide-slate-400"></div>
-                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-32 ">
+                <div className="divider mb-0 mt-0 h-0 divide-slate-400"></div>
+                <footer className="footer bg-slate-100 shadow-xl text-neutral-content p-10 lg:px-32">
                     <aside>
-                        <svg
-                            width="50"
-                            height="50"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            className="fill-current">
-                            <path
-                                d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path>
-                        </svg>
+                        <img src="/src/assets/image/logo with text black.png" alt="logo" className="h-10" />
                         <p>
-                            ACME Industries Ltd.
+                            Desa Mekarsari Ltd.
                             <br />
                             Providing reliable tech since 1992
                         </p>
                     </aside>
                     <nav>
-                        <h6 className="footer-title">Social</h6>
+                        <h6 className="footer-title">Social Media</h6>
                         <div className="grid grid-flow-col gap-4">
                             <a>
                                 <svg
@@ -179,9 +174,21 @@ const Navbar = ({ children }) => {
                         </div>
                     </nav>
                 </footer>
-                {/* <div className="footer bg-primary text-white lg:px-24 px-6 py-3">
-                    <p>Copyright &copy; 2024 Company</p>
-                </div> */}
+                {/* Bottom Navigation */}
+                <div className="btm-nav sm:hidden">
+                    <Link to='/' className={isActivePage('/') ? "text-primary active" : "text-primary"}>
+                        <i className="pi fi-rs-home text-lg"> </i>
+                        <span className="btm-nav-label">Home</span>
+                    </Link>
+                    <Link to='/product' className={isActivePage('/product') ? "text-primary active" : "text-primary"}>
+                        <i className="pi fi-tr-boxes text-lg"> </i>
+                        <span className="btm-nav-label">Produk</span>
+                    </Link>
+                    <Link to='/cart' className={isActivePage('/cart') ? "text-primary active" : "text-primary"}>
+                        <i className="pi pi-shopping-cart text-lg mb-0.5"></i>
+                        <span className="btm-nav-label">Keranjang</span>
+                    </Link>
+                </div>
             </div >
         </NavbarContext.Provider>
     )

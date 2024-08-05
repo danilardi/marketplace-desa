@@ -44,7 +44,7 @@ const Register = () => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center h-full mt-14">
+        <div className="flex flex-col items-center justify-center h-full mt-8">
             <div className="card shadow-lg w-96">
                 <div className="card-body">
                     <h2 className="card-title">Register</h2>

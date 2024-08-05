@@ -2,8 +2,6 @@ import axios from "axios";
 import { getAccessToken, getRefreshToken, removeAuth } from "./AuthUtils";
 import { getBaseURLWithPrefix } from "./Helper";
 import { refreshToken } from "./API/Auth";
-import { useNavigate } from "react-router-dom";
-import { ToastError } from "./AlertNotification";
 
 const Api = axios.create({
   baseURL: getBaseURLWithPrefix(),
