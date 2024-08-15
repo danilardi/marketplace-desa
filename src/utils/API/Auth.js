@@ -17,8 +17,7 @@ export const login = async (body) => {
             return res;
         }
     } catch (error) {
-        // console.log(error)
-        ToastError(error.data.message);
+        ToastError(error.message);
     }
 }
 
