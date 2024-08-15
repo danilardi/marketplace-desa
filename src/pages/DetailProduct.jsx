@@ -251,7 +251,7 @@ const DetailProduct = () => {
                             </p>
                         </TabPanel>
                         {/* Ulasan Produk */}
-                        <TabPanel header="Ulasan Produk" disabled={!isLogin} className="rounded-xl">
+                        <TabPanel header="Ulasan Produk" className="rounded-xl">
                             <div className="flex flex-col md:flex-row">
                                 <h2 className="order-1 text-xl font-semibold md:hidden">Review {product.name}</h2>
                                 {/* daftar review */}
@@ -278,8 +278,13 @@ const DetailProduct = () => {
                                     <div className="flex justify-between mt-2">
                                         <StarRating rating={userRating} setUserRating={setUserRating} onClick={true} size="8" />
                                         <Button className="h-8" onClick={() => {
-                                            console.log("submit review", userReview, userRating)
-                                            handleAddReview()
+                                            // console.log("submit review", userReview, userRating)
+                                            if (isLogin) {
+                                                handleAddReview()
+                                            } else {
+                                                ToastWarning("Silahkan login terlebih dahulu")
+                                                navigate('/login')
+                                            }
                                         }}>
                                             Submit
                                         </Button>
