@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
-import { addProduct, deleteProduct, editProduct, fetchProduct } from "../utils/API/Product"
+import { addProduct, deleteProduct, editProduct, getProduct } from "../utils/API/Product"
 import { Link } from "react-router-dom"
 import CardProduct from "../components/CardProduct"
 import { getRoleId } from "../utils/AuthUtils"
@@ -35,7 +35,8 @@ const Product = () => {
     }, [isAdmin])
 
     useEffect(() => {
-        fetchProduct(limit, offset, setProducts)
+        // console.log("offset", offset)
+        getProduct(limit, offset, setProducts)
     }, [offset])
 
     useEffect(() => {
@@ -53,7 +54,7 @@ const Product = () => {
         addProduct(addProductRequest).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil menambahkan produk")
-                fetchProduct(limit, offset, setProducts)
+                getProduct(limit, offset, setProducts)
             }
         })
     }
@@ -74,7 +75,7 @@ const Product = () => {
         editProduct(selectedProductId, addProductRequest).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil mengedit produk")
-                fetchProduct(limit, offset, setProducts)
+                getProduct(limit, offset, setProducts)
             }
         })
     }
@@ -84,7 +85,7 @@ const Product = () => {
         deleteProduct(id).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil menghapus produk")
-                fetchProduct(limit, offset, setProducts)
+                getProduct(limit, offset, setProducts)
             }
         })
     }

@@ -3,7 +3,7 @@ import { Dialog } from "primereact/dialog"
 import { InputText } from "primereact/inputtext"
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from "primereact/button";
-import { addImageProduct, fetchProductById } from "../../utils/API/Product";
+import { addImageProduct, getProductById } from "../../utils/API/Product";
 import { getBaseURLWithPrefix } from "../../utils/Helper";
 
 export const AddProductModal = ({ show, setShow, handler }) => {
@@ -29,6 +29,9 @@ export const AddProductModal = ({ show, setShow, handler }) => {
     const handleAddProduct = async () => {
         const uploadPromises = file.map((item) => {
             const formData = new FormData();
+            if (item.size > 1000000) {
+                return;
+            }
             formData.append("image", item);
             return addImageProduct(formData).then((res) => {
                 if (res) {
@@ -46,7 +49,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
     return (
         <Dialog
             visible={show}
-            style={{ width: '698px', height: '550px', top: '4rem', position: 'fixed' }}
+            className="w-full h-full p-5 md:p-0 md:w-[700px] md:h-[600px] top-12 fixed"
             onHide={() => setShow(false)}
             header="Tambah Produk"
         >
@@ -91,7 +94,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
                     />
                 </div>
                 <div className="py-2 w-[90%]">
-                    <h6 className="mb-0">Upload Image</h6>
+                    <h6 className="mb-0">Upload Image <span className="text-warning">(MAX 1MB)</span></h6>
                     {file.length == 0 && (
                         <div className="container overflow-hidden border-2 border-dashed min-h-28 flex-center">
                             <h6>
@@ -107,6 +110,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
                         {file.map((item, index) => (
                             <div key={index} className="flex-center flex-col">
                                 <img src={URL.createObjectURL(item)} alt="image" className="w-20 h-20 object-cover" />
+                                {item.size > 1000000 && (<p className="text-red-600 text-xs">File size too large</p>)}
                                 <Button icon="pi pi-times" className="size-8 mt-2" severity="danger" onClick={() => {
                                     const _file = [...file];
                                     _file.splice(index, 1);
@@ -132,8 +136,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
                 {/* <Button severity="warning" onClick={() => {
-                    // // console.log('file', dataProduct);
-                    handler(dataProduct);
+                    console.log('file', file);
                 }} ><span>Cek</span></Button> */}
                 <Button severity="success" onClick={() => {
                     handleAddProduct()
@@ -153,7 +156,8 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
     const [file, setFile] = useState([]);
 
     useEffect(() => {
-        fetchProductById(selectedProductId, setDataProduct);
+        if (show) {
+        getProductById(selectedProductId, setDataProduct);}
     }, [show]);
 
 
@@ -173,14 +177,16 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
     const handleEditProduct = async () => {
         const uploadPromises = file.map((item) => {
             const formData = new FormData();
-            formData.append("image", item);
-            return addImageProduct(formData).then((res) => {
-                if (res) {
-                    const _dataProduct = { ...dataProduct };
-                    _dataProduct.images.push(res.data.fileLocation);
-                    setDataProduct(_dataProduct);
-                }
-            });
+            if (item.size < 1000000) {
+                formData.append("image", item);
+                return addImageProduct(formData).then((res) => {
+                    if (res) {
+                        const _dataProduct = { ...dataProduct };
+                        _dataProduct.images.push(res.data.fileLocation);
+                        setDataProduct(_dataProduct);
+                    }
+                });
+            }
         });
         await Promise.all(uploadPromises);
         // console.log("dataProduct", dataProduct);
@@ -190,7 +196,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
     return (
         <Dialog
             visible={show}
-            style={{ width: '698px', height: '550px', top: '4rem', position: 'fixed' }}
+            className="w-full px-5 md:px-0 md:w-[700px] md:h-[550px] top-12 fixed"
             onHide={() => setShow(false)}
             header="Tambah Produk"
         >
@@ -251,7 +257,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
                     </div>)}
                 </div>
                 <div className="py-2 w-[90%]">
-                    <h6 className="mb-0">Upload New Image</h6>
+                    <h6 className="mb-0">Upload New Image <span className="text-warning">(MAX 1MB)</span></h6>
                     {file.length == 0 && (
                         <div className="container overflow-hidden border-2 border-dashed min-h-28 flex-center">
                             <h6>
@@ -267,6 +273,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
                         {file.map((item, index) => (
                             <div key={index} className="flex-center flex-col">
                                 <img src={URL.createObjectURL(item)} alt="image" className="w-20 h-20 object-cover" />
+                                {item.size > 1000000 && (<p className="text-red-600 text-xs">File size too large</p>)}
                                 <Button icon="pi pi-times" className="size-8 mt-2" severity="danger" onClick={() => {
                                     const _file = [...file];
                                     _file.splice(index, 1);
@@ -291,9 +298,9 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
                 </div>
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
-                <Button severity="warning" onClick={() => {
+                {/* <Button severity="warning" onClick={() => {
                     // console.log('cek', file);
-                }} ><span>Cek</span></Button>
+                }} ><span>Cek</span></Button> */}
                 <Button severity="success" onClick={() => {
                     handleEditProduct()
                 }} ><span>Tambahkan</span></Button>

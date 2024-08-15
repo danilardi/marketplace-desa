@@ -74,7 +74,7 @@ const Register = () => {
                                     _account.fullname = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Masukkan nama lengkap disini"
+                                placeholder="Masukkan nama lengkap disini!"
                             />
                             {(account.fullname.length == 0) && (
                                 <small className="text-red-500">Nama tidak boleh kosong</small>
@@ -90,7 +90,7 @@ const Register = () => {
                                     _account.username = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Masukkan username disini"
+                                placeholder="Masukkan username disini!"
                             />
                             {(!isUsernameValid && account.username.length > 0) && (
                                 <small className="text-red-500">Username minimal 6 karakter</small>
@@ -107,7 +107,7 @@ const Register = () => {
                                     _account.email = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Masukkan email disini"
+                                placeholder="Masukkan email disini!"
                             />
                             {(!isEmailValid && account.email.length > 0) && (
                                 <small className="text-red-500">Input harus berbentuk email</small>
@@ -126,7 +126,7 @@ const Register = () => {
                                             _account.password = e.target.value
                                             setAccount(_account)
                                         }}
-                                        placeholder="Masukkan kata sandi disini"
+                                        placeholder="Masukkan kata sandi disini!"
                                     />
                                 </IconField>
                             </div>
@@ -147,7 +147,7 @@ const Register = () => {
                                             _account.confirm_password = e.target.value
                                             setAccount(_account)
                                         }}
-                                        placeholder="Masukkan konfirmasi kata sandi disini"
+                                        placeholder="Masukkan konfirmasi kata sandi disini!"
                                     />
                                 </IconField>
                             </div>

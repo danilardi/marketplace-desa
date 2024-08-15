@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from "react"
-import { deleteProduct, editProduct, fetchProduct, fetchProductById } from "../utils/API/Product"
+import { addProductReview, deleteProduct, editProduct, getProduct, getProductById, getProductReview } from "../utils/API/Product"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button } from 'primereact/button';
+import { InputTextarea } from "primereact/inputtextarea";
+import { FloatLabel } from "primereact/floatlabel";
 import StarRating from "../components/StarRating";
 import { formatCurrency } from "../utils/FormatUtils";
 import CardProduct from "../components/CardProduct";
@@ -22,18 +24,21 @@ const DetailProduct = () => {
     const { badge, setBadge, isLogin } = useNavbar()
 
     const [product, setProduct] = useState(null)
-    const [otherProduct, setOtherProduct] = useState(null)
+    const [productReview, setProductReview] = useState([])
+    const [otherProduct, setOtherProduct] = useState([])
     const [quantity, setQuantity] = useState(1);
-    const [delayedImages, setDelayedImages] = useState([])
     const [showEditProductModal, setShowEditProductModal] = useState(false)
+    const [userReview, setUserReview] = useState("")
+    const [userRating, setUserRating] = useState(0)
 
     const carouselRef = useRef(null);
 
     const params = useParams()
 
     useEffect(() => {
-        fetchProductById(params.id, setProduct)
-        fetchProduct(4, 0, setOtherProduct)
+        getProductById(params.id, setProduct)
+        getProduct(4, 0, setOtherProduct)
+        getProductReview(params.id, setProductReview)
     }, [params])
 
     useEffect(() => {
@@ -53,7 +58,8 @@ const DetailProduct = () => {
     }
 
     const handleCarouselChange = (index, behavior = 'smooth') => {
-        const targetElement = document.getElementById(`item${index}`);
+        console.log("index", index)
+        const targetElement = document.getElementById(`item${index+1}`);
         const carousel = carouselRef.current;
         if (targetElement && carousel) {
             const targetPosition = targetElement.offsetLeft;
@@ -89,8 +95,8 @@ const DetailProduct = () => {
         editProduct(params.id, addProductRequest).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil mengedit produk")
-                fetchProductById(params.id, setProduct)
-                fetchProduct(4, 0, setOtherProduct)
+                getProductById(params.id, setProduct)
+                getProduct(4, 0, setOtherProduct)
             }
         })
     }
@@ -105,6 +111,21 @@ const DetailProduct = () => {
         })
     }
 
+    const handleAddReview = () => {
+        addProductReview(params.id, {
+            comment: userReview,
+            rating: userRating
+        }).then((res) => {
+            if (res) {
+                ToastSuccess("Berhasil menambahkan review")
+                setUserReview("")
+                setUserRating(0)
+                getProductById(params.id, setProduct)
+                getProductReview(params.id, setProductReview)
+            }
+        })
+    }
+
     // replace image function
     const replaceImage = (error) => {
         //replacement of broken Image
@@ -112,6 +133,10 @@ const DetailProduct = () => {
         error.target.className = "absolute w-full h-full object-contain"
         // error.target.src = `https://picsum.photos/400/200?random=${Math.random()}`;
     }
+
+    // const cek = () => {
+    //     console.log("review", productReview)
+    // }
 
     if (product !== null) return (
         <>
@@ -127,6 +152,7 @@ const DetailProduct = () => {
                     <li><span className="inline-flex items-center gap-2">{product.name}</span></li>
                 </ul>
             </div>
+            {/* <Button onClick={cek}>Cek</Button> */}
             {/* card product */}
             <div className="flex flex-col md:flex-row">
                 <div className="basis-1/2 w-full md:max-w-[50%]">
@@ -195,7 +221,7 @@ const DetailProduct = () => {
                         </div>
                         <div className="flex items-center gap-4">
                             <StarRating rating={[product.rating]} />
-                            {/* <label className="text-lg">Terjual 0</label> */}
+                            <label className="text-sm text-gray-500">{product.rating} ({productReview.length} rating)</label>
                         </div>
                         <p className="text-2xl font-bold text-orange-400 mt-5">{formatCurrency(product.price)}</p>
                         {Number(getRoleId()) === 2 && (
@@ -213,22 +239,59 @@ const DetailProduct = () => {
                 </div>
             </div >
             {/* card description */}
-            <div className="card bg-base-100 shadow-xl mt-4 md:mt-0">
-                <div className="card-body p-0">
-                    <TabView className="">
+            <div className="card bg-base-100 shadow-xl mt-4 md:mt-0 rounded-xl">
+                <div className="card-body p-0 rounded-xl">
+                    <TabView className="rounded-xl">
+                        {/* Informasi Produk */}
                         <TabPanel header="Informasi Produk">
                             <h1 className="text-2xl font-semibold">{product.name}</h1>
                             <p className="m-0 mt-4">
                                 {product.description}
                             </p>
                         </TabPanel>
-                        <TabPanel header="Ulasan Produk" disabled></TabPanel>
+                        {/* Ulasan Produk */}
+                        <TabPanel header="Ulasan Produk" disabled={!isLogin} className="rounded-xl">
+                            <div className="flex flex-col md:flex-row">
+                                <h2 className="order-1 text-xl font-semibold md:hidden">Review {product.name}</h2>
+                                {/* daftar review */}
+                                <div className="order-3 md:order-1 mt-3 md:mt-0 basis-1/2 md:max-w-[50%] flex flex-col max-h-[400px] overflow-auto">
+                                    <h2 className="text-xl font-semibold hidden md:flex">Review {product.name}</h2>
+                                    <div className="flex flex-col gap-4 mt-4">
+                                        {productReview.map((review, index) => (
+                                            <div key={index} className="flex items-center" >
+                                                <img src="https://picsum.photos/200" alt="profile" className="w-8 h-8 rounded-full self-start mt-3" />
+                                                <div className="flex flex-col ms-4 text-ellipsis overflow-hidden">
+                                                    <div className="flex gap-4 items-center">
+                                                        <p className="text-md font-semibold text-nowrap text-ellipsis overflow-hidden max-w-[200px]">{review.owner}</p>
+                                                        <StarRating rating={review.rating} size="4" />
+                                                    </div>
+                                                    <p className="text-sm text-gray-500">{review.comment}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                {/* input review */}
+                                <div className="order-2 mt-3 md:mt-0 basis-1/2 md:max-w-[50%] flex flex-col md:px-24">
+                                    <InputTextarea className="" id="review" placeholder="Bagikan pengalaman anda tentang produk ini" value={userReview} onChange={(e) => setUserReview(e.target.value)} rows={5} cols={50} />
+                                    <div className="flex justify-between mt-2">
+                                        <StarRating rating={userRating} setUserRating={setUserRating} onClick={true} size="8" />
+                                        <Button className="h-8" onClick={() => {
+                                            console.log("submit review", userReview, userRating)
+                                            handleAddReview()
+                                        }}>
+                                            Submit
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </TabPanel>
                     </TabView>
                 </div>
             </div>
             {/* card product lainnya */}
             <div className="flex flex-wrap mt-8" >
-                {otherProduct !== null && otherProduct.products.map((product) => (
+                {otherProduct !== null && otherProduct?.products?.map((product) => (
                     <div key={product.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
                         <CardProduct product={product} />
                     </div>

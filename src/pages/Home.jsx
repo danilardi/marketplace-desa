@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { fetchProduct } from "../utils/API/Product"
+import { getProduct } from "../utils/API/Product"
 import CardProduct from "../components/CardProduct"
 import { Button } from "primereact/button"
-import { set } from "lodash"
+import fotoDesa1 from "../assets/image/foto-desa-1.jpg"
+import fotoDesa2 from "../assets/image/foto-desa-2.jpg"
 
 const Home = () => {
     const navigate = useNavigate()
@@ -18,51 +19,64 @@ const Home = () => {
         `https://picsum.photos/1700/360?random=${3}`,
         `https://picsum.photos/1700/360?random=${0}`,
     ]
+    const fotoDesa = [
+        fotoDesa1,
+        fotoDesa2,
+    ]
 
     const indexBannerRef = useRef(indexBanner);
-    const carouselRef = useRef(null);
+    const carouselBannerRef = useRef(null);
+    const carouselFotoDesaRef = useRef(null);
 
     useEffect(() => {
-        fetchProduct(4, 0, setOtherProduct)
+        getProduct(4, 0, setOtherProduct)
     }, [])
 
     useEffect(() => {
-        handleCarouselChange(1, 'instant')
-        const carousel = carouselRef.current;
-        const handleScroll = () => {
-            let newIndex = (carousel.scrollLeft / carousel.clientWidth);
+        handleCarouselBannerChange(1, 'instant')
+        const carouselBanner = carouselBannerRef.current;
+        const handleScrollBanner = () => {
+            let newIndex = (carouselBanner.scrollLeft / carouselBanner.clientWidth);
             if (Number(newIndex.toFixed(2)) == newIndex.toFixed(0)) {
                 setIndexBanner(Number(newIndex.toFixed(0)));
             }
         }
-        carousel.addEventListener('scroll', handleScroll);
+        carouselBanner.addEventListener('scroll', handleScrollBanner);
         return () => {
-            carousel.removeEventListener('scroll', handleScroll);
+            carouselBanner.removeEventListener('scroll', handleScrollBanner);
         }
     }, []);
 
     useEffect(() => {
-        // // console.log("indexBanner", indexBanner)
         indexBannerRef.current = indexBanner;
         if (indexBanner == banner.length - 1) {
             setIndexBanner(1)
-            handleCarouselChange(1, 'instant')
+            handleCarouselBannerChange(1, 'instant')
         } else if (indexBanner == 0) {
             setIndexBanner(banner.length - 2)
-            handleCarouselChange(banner.length - 2, 'instant')
+            handleCarouselBannerChange(banner.length - 2, 'instant')
         }
         let autoRunBannerRef = setTimeout(() => {
-            // // console.log("runTimeout", indexBannerRef.current)
-            handleCarouselChange(indexBannerRef.current + 1)
+            handleCarouselBannerChange(indexBannerRef.current + 1)
         }, 3000)
         return () => {
             clearTimeout(autoRunBannerRef);
         }
     }, [indexBanner]);
 
-    const handleCarouselChange = (index, behavior = 'smooth') => {
+    const handleCarouselBannerChange = (index, behavior = 'smooth') => {
         const targetElement = document.getElementById(`slide${index}`);
-        const carousel = carouselRef.current;
+        const carousel = carouselBannerRef.current;
+        if (targetElement && carousel) {
+            const targetPosition = targetElement.offsetLeft;
+            carousel.scrollTo({ left: targetPosition, behavior: behavior });
+        }
+    }
+    const handleCarouselFotoDesaChange = (index, behavior = 'smooth') => {
+        // console.log("tess", index)
+        const targetElement = document.getElementById(`foto-desa${index}`);
+        // console.log("targetElement", targetElement)
+        const carousel = carouselFotoDesaRef.current;
         if (targetElement && carousel) {
             const targetPosition = targetElement.offsetLeft;
             carousel.scrollTo({ left: targetPosition, behavior: behavior });
@@ -92,13 +106,13 @@ const Home = () => {
 
             {/* <Button className="btn btn-primary text-white" onClick={handleClick}>Testing</Button> */}
             {/* banner */}
-            <div className="flex w-full justify-center items-center shadow-md">
+            <div className="flex w-full justify-center items-center shadow-md rounded-lg">
                 <a className="btn btn-circle btn-secondary text-white z-20 -mx-10 md:-mx-6" onClick={() => {
                     let newIndex = indexBanner - 1
                     if (newIndex < 0) newIndex = banner.length - 1
-                    handleCarouselChange(newIndex)
+                    handleCarouselBannerChange(newIndex)
                 }}>❮</a>
-                <div className="carousel w-full h-[140px] md:h-[300px] lg:h-[360px] rounded-lg z-0" ref={carouselRef}>
+                <div className="carousel w-full h-[140px] md:h-[300px] lg:h-[360px] rounded-lg z-0" ref={carouselBannerRef}>
                     {banner.map((image, index) => (
                         <div key={index} id={`slide${index}`} className="carousel-item w-full z-0">
                             <img
@@ -112,7 +126,7 @@ const Home = () => {
                 <a className="btn btn-circle btn-secondary text-white z-20 -mx-10 sm:-mx-6" onClick={() => {
                     let newIndex = indexBanner + 1
                     if (newIndex >= banner.length) newIndex = 0
-                    handleCarouselChange(newIndex)
+                    handleCarouselBannerChange(newIndex)
                 }}>❯</a>
             </div>
             {/* profile */}
@@ -121,17 +135,44 @@ const Home = () => {
                     <h2 className="card-title text-white">Profil Desa</h2>
                 </div>
                 <div className="card-body">
-                    <div className="flex flex-col sm:flex-row">
-                        <figure className="basis-1/2">
-                            <img
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsXZmtztoH5de1OhcI0qjEjNa6MJF_owcXvA&s"
-                                alt="Album"
-                                className="w-full h-full" />
-                        </figure>
+                    <div className="flex flex-col lg:flex-row">
+                        <div className="basis-1/2">
+                            <div className="carousel h-[240px] md:h-[360px] rounded-lg shadow-lg" ref={carouselFotoDesaRef}>
+                                {fotoDesa.map((image, index) => (
+                                    <div key={index} id={`foto-desa${index}`} className="carousel-item w-full">
+                                        <div className="w-full h-full">
+                                            <img
+                                                src={image}
+                                                className="w-full h-full"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="carousel carousel-center w-full rounded-box space-x-4 p-4 justify-center">
+                                {fotoDesa.map((image, index) => (
+                                    <a
+                                        key={index}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handleCarouselFotoDesaChange(index)
+                                        }}
+                                        className="w-24 h-16 bg-white rounded-md carousel-item">
+                                        <img
+                                            src={image}
+                                            className="w-full h-full object-fill"
+                                        />
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+
                         <div className="basis-1/2 flex flex-col mt-4 sm:mt-0 ms-0 sm:ms-4">
-                            <h2 className="card-title">Desa Mekarsari</h2>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro modi autem distinctio necessitatibus quis laboriosam velit vel magni, perferendis suscipit debitis maxime facilis nihil expedita magnam sed dolore voluptatem inventore.</p>
-                            <Button className="btn btn-primary text-white mt-3 " onClick={() => navigate("/product")}>Lihat Produk</Button>
+                            <h2 className="card-title font-bold mt-0">Desa Mekarsari</h2>
+                            <p>Desa Mekarsari adalah sebuah desa yang terletak di Kecamatan Rancabungur, Kabupaten Bogor, Jawa Barat. Desa ini memiliki kode pos 16310 dan kode Kemendagri 32.01.34.2005. Mekarsari merupakan salah satu dari tujuh desa yang ada di Kecamatan Rancabungur, bersama dengan desa-desa lain seperti Bantarjaya dan Cimulang.
+                                <br /><br />Di desa Mekarsari, terdapat beberapa kegiatan pembangunan yang aktif dilaksanakan. Salah satu proyek yang menonjol adalah pembangunan akses jalan dan tembok penahan tanah (TPT) di Kampung Sukajadi, yang didanai oleh program Samisade. Proyek ini bertujuan untuk membuka akses jalan baru sepanjang 350 meter, dengan pengerjaan yang melibatkan banyak tenaga kerja lokal serta partisipasi swadaya dari masyarakat
+                                <br /><br />Selain kegiatan pembangunan infrastruktur, Desa Mekarsari juga memiliki potensi dan kegiatan masyarakat yang aktif, seperti terlihat dari berbagai kegiatan yang dilaksanakan oleh warga</p>
+                            <Button className="btn btn-primary text-white" onClick={() => navigate("/product")}>Lihat Produk</Button>
                         </div>
                     </div>
 
