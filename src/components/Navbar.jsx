@@ -112,7 +112,7 @@ const Navbar = ({ children }) => {
                                         <div className="avatar size-8 flex-center">
                                             <i className="fi fi-rr-circle-user text-2xl flex-center"></i>
                                         </div>
-                                        <span className="pe-1">{user.fullname}</span>
+                                        <span className="pe-1">{user?.fullname}</span>
                                         <ul
                                             tabIndex={0}
                                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-32 p-2 shadow text-black top-8">
