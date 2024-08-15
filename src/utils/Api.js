@@ -28,7 +28,7 @@ const onResponseError = (error) => {
     removeAuth()
     window.location.reload()
   }
-  return Promise.reject(error.response ? error.response : error)
+  return Promise.reject(error?.response?.data ? error?.response?.data : error)
 }
 
 Api.interceptors.request.use(onRequestSuccess, onRequestError)

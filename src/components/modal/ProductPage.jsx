@@ -43,6 +43,13 @@ export const AddProductModal = ({ show, setShow, handler }) => {
         });
         await Promise.all(uploadPromises);
         handler(dataProduct);
+        setDataProduct({
+            name: "",
+            price: 0,
+            description: "",
+            images: [],
+        })
+        setFile([])
         setShow(false);
     }
 
@@ -50,7 +57,16 @@ export const AddProductModal = ({ show, setShow, handler }) => {
         <Dialog
             visible={show}
             className="w-full h-full p-5 md:p-0 md:w-[700px] md:h-[600px] top-12 fixed"
-            onHide={() => setShow(false)}
+            onHide={() => {
+                setDataProduct({
+                    name: "",
+                    price: 0,
+                    description: "",
+                    images: [],
+                })
+                setFile([])
+                setShow(false)
+            }}
             header="Tambah Produk"
         >
             <div className="container flex flex-wrap justify-center gap-[10%]">
@@ -157,7 +173,8 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
 
     useEffect(() => {
         if (show) {
-        getProductById(selectedProductId, setDataProduct);}
+            getProductById(selectedProductId, setDataProduct);
+        }
     }, [show]);
 
 
@@ -190,14 +207,29 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
         });
         await Promise.all(uploadPromises);
         // console.log("dataProduct", dataProduct);
-        handler(dataProduct);
+        handler(dataProduct); setDataProduct({
+            name: "",
+            price: 0,
+            description: "",
+            images: [],
+        })
+        setFile([])
         setShow(false);
     }
     return (
         <Dialog
             visible={show}
             className="w-full px-5 md:px-0 md:w-[700px] md:h-[550px] top-12 fixed"
-            onHide={() => setShow(false)}
+            onHide={() => {
+                setDataProduct({
+                    name: "",
+                    price: 0,
+                    description: "",
+                    images: [],
+                })
+                setFile([])
+                setShow(false)
+            }}
             header="Tambah Produk"
         >
             <div className="container flex flex-wrap justify-center gap-[10%]">

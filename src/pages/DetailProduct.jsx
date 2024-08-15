@@ -12,11 +12,12 @@ import CardProduct from "../components/CardProduct";
 import { getBaseURLWithPrefix } from "../utils/Helper";
 import { addToCart } from "../utils/API/Cart";
 import { useNavbar } from "../components/Navbar";
-import { ToastSuccess, ToastWarning } from "../utils/AlertNotification";
+import { ToastError, ToastSuccess, ToastWarning } from "../utils/AlertNotification";
 import { getRoleId } from "../utils/AuthUtils";
 import { AddProductModal, EditProductModal } from "../components/modal/ProductPage";
 import { AddProductRequest } from "../model/ProductModel";
 import PlaceholderImage from "../assets/image/placeholder.png";
+import ProfileImage from "../assets/image/profile.svg";
 
 
 const DetailProduct = () => {
@@ -44,7 +45,7 @@ const DetailProduct = () => {
     useEffect(() => {
         // // console.log("product", product)
         // // console.log("otherProduct", otherProduct)
-    }, [product, otherProduct])
+    }, [product, otherProduct, userReview, userRating])
 
 
     const increment = () => {
@@ -259,7 +260,7 @@ const DetailProduct = () => {
                                     <div className="flex flex-col gap-4 mt-4">
                                         {productReview.map((review, index) => (
                                             <div key={index} className="flex items-center" >
-                                                <img src="https://picsum.photos/200" alt="profile" className="w-8 h-8 rounded-full self-start mt-3" />
+                                                <img src={ProfileImage} alt="profile" className="w-10 h-10 rounded-full self-start mt-3" />
                                                 <div className="flex flex-col ms-4 text-ellipsis overflow-hidden">
                                                     <div className="flex gap-4 items-center">
                                                         <p className="text-md font-semibold text-nowrap text-ellipsis overflow-hidden max-w-[200px]">{review.owner}</p>

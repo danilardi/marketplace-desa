@@ -1,5 +1,6 @@
 import Api from "../Api";
 import ApiForm from "../ApiForm";
+import HandleNotifError from "../HandleNotifError";
 // import HandleNotifError from "../HandleNotifError";
 
 export const getProduct = async (limit, offset, setFunction) => {
@@ -55,7 +56,7 @@ export const addProductReview = async (id, data) => {
         }
     } catch (error) {
         console.log(error);
-        // HandleNotifError(error);
+        HandleNotifError(error);
     }
 }
 

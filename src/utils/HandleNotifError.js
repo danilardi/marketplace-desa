@@ -1,21 +1,12 @@
-import { badRequest, Error, mustLogin, notFound } from "./AlertNotification";
+import { ToastError } from "./AlertNotification";
 
 const HandleNotifError = (error) => {
-    switch (error.status) {
-        case 400:
-            badRequest(error.data.message)
-            break;
-        case 401:
-            mustLogin(error.data.message)
-            break;
-        case 403:
-            badRequest(error.data.message)
-            break;
-        case 404:
-            notFound(error.data.message)
+    switch(error.statusCode) {
+        case 500:
+            ToastError("Server Error\nSilahkan coba lagi!");
             break;
         default:
-            Error(error.data.message)
+            ToastError(error.message);
             break;
     }
 };
