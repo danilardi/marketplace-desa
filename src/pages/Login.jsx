@@ -75,7 +75,7 @@ const Login = () => {
                         </div>
                         <Button
                             type="submit"
-                            className="btn btn-primary text-white !mt-6"
+                            className="btn btn-accent text-white !mt-6"
                             onClick={handleLogin}
                             loading={loading}
                         ><span>Login</span></Button>

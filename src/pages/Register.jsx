@@ -158,7 +158,7 @@ const Register = () => {
                         <Button
                             disabled={!(account.fullname.length > 0 && isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid)}
                             type="submit"
-                            className="btn btn-primary text-white !mt-6"
+                            className="btn btn-accent text-white !mt-6"
                             onClick={handleRegister}
                             loading={loading}
                         >

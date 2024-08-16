@@ -234,7 +234,7 @@ const DetailProduct = () => {
                                     <span>{quantity}</span>
                                     <Button icon="pi pi-plus" rounded aria-label="plus" onClick={increment} />
                                 </div>
-                                <Button label="Tambahkan ke keranjang" className="btn btn-primary text-white !mt-6" onClick={handleAddToCart} />
+                                <Button label="Tambahkan ke keranjang" className="btn btn-accent text-white !mt-6" onClick={handleAddToCart} />
                             </>)}
                     </div>
                 </div>

@@ -27,7 +27,7 @@ tailwind-utilities;
   }
 
   .p-dropdown-panel.p-component .p-dropdown-items-wrapper {
-    @apply !max-h-[400px];
+    @apply  !max-h-[400px];
   }
 }
 
