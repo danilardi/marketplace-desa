@@ -16,13 +16,13 @@ export const AddProductModal = ({ show, setShow, handler }) => {
     const [file, setFile] = useState([]);
 
     useEffect(() => {
-        // // console.log("file update", file);
+
     }, [file]);
 
     const handlerAddImage = (e) => {
-        // // console.log("e", e.target.files);
+
         let _file = [...file, ...e.target.files];
-        // // console.log("_file", _file);
+
         setFile(_file);
     }
 
@@ -152,7 +152,7 @@ export const AddProductModal = ({ show, setShow, handler }) => {
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
                 {/* <Button severity="warning" onClick={() => {
-                    console.log('file', file);
+ 
                 }} ><span>Cek</span></Button> */}
                 <Button severity="success" onClick={() => {
                     handleAddProduct()
@@ -179,11 +179,11 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
 
 
     useEffect(() => {
-        // console.log("dataProduct", dataProduct);
+
     }, [dataProduct]);
 
     useEffect(() => {
-        // // console.log("file update", file);
+
     }, [file]);
 
     const handlerAddImage = (e) => {
@@ -206,7 +206,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
             }
         });
         await Promise.all(uploadPromises);
-        // console.log("dataProduct", dataProduct);
+
         handler(dataProduct); setDataProduct({
             name: "",
             price: 0,
@@ -331,7 +331,7 @@ export const EditProductModal = ({ show, setShow, selectedProductId, handler }) 
             </div>
             <div className="flex justify-end my-3 mr-5 gap-4">
                 {/* <Button severity="warning" onClick={() => {
-                    // console.log('cek', file);
+ 
                 }} ><span>Cek</span></Button> */}
                 <Button severity="success" onClick={() => {
                     handleEditProduct()

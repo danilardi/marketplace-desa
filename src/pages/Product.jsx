@@ -20,31 +20,31 @@ const Product = () => {
     const [selectedProductId, setSelectedProductId] = useState(null)
 
     useEffect(() => {
-        // // console.log("role", getRoleId())
+
         if (getRoleId() == 1) {
-            // // console.log("masuk")
+
             setIsAdmin(true)
         } else {
-            // // console.log("gak masuk")
+
             setIsAdmin(false)
         }
     }, [])
 
     useEffect(() => {
-        // // console.log("cekk", isAdmin)
+
     }, [isAdmin])
 
     useEffect(() => {
-        // console.log("offset", offset)
+
         getProduct(limit, offset, setProducts)
     }, [offset])
 
     useEffect(() => {
-        // // console.log(products)
+
     }, [products])
 
     const handleAddProduct = (data) => {
-        // console.log("add product", data)
+
         const addProductRequest = new AddProductRequest(
             data.name,
             data.price,
@@ -60,7 +60,7 @@ const Product = () => {
     }
 
     const handleEditProduct = (id) => {
-        // console.log("edit product", id)
+
         setSelectedProductId(id)
         setShowEditProductModal(true)
     }
@@ -81,7 +81,7 @@ const Product = () => {
     }
 
     const handleDeleteProduct = (id) => {
-        // console.log("delete product", id)
+
         deleteProduct(id).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil menghapus produk")

@@ -7,7 +7,6 @@ const StarRating = ({ rating, setUserRating, onClick = false, size = "6" }) => {
     const [quarterStars, setQuarterStars] = useState(Math.round((rat - fullStars) * 4));
 
     useEffect(() => {
-        // console.log('rating', rating, rat)
     }, [])
     useEffect(() => {
         setFullStars(Math.floor(rat))
@@ -21,7 +20,6 @@ const StarRating = ({ rating, setUserRating, onClick = false, size = "6" }) => {
                         key={index}
                         onClick={() => {
                             let newIndex = index + 1
-                            // console.log('clicked', newIndex)
                             if (onClick) {
                                 setUserRating(newIndex)
                                 setRat(newIndex)
@@ -105,7 +103,7 @@ const StarRating = ({ rating, setUserRating, onClick = false, size = "6" }) => {
                         key={index}
                         onClick={() => {
                             let newIndex = fullStars + index + 1
-                            // console.log('clicked', newIndex)
+
                             if (onClick) {
                                 setUserRating(newIndex)
                                 setRat(newIndex)

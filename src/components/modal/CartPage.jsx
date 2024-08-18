@@ -40,17 +40,17 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
     }, []);
 
     useEffect(() => {
-        // console.log("show", show);
+
         if (show) {
-            // console.log("masuk show");
+
             getUser().then(async (res) => {
-                // console.log("res", res);
+
                 const _data = { ...data };
                 _data.nama = res.data.fullname;
                 _data.email = res.data.email;
                 _data.phonenumber = res.data.phonenumber;
                 if (res.data?.address?.length > 0) {
-                    // console.log("masuk address");
+
                     _data.address.provinsi = res.data.address[0];
                     setSelectedProvinsi(listProvinsi.find((item) => item.name === _data.address.provinsi))
                     _data.address.kota = res.data.address[1];
@@ -58,8 +58,8 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                     _data.address.kelurahan = res.data.address[3];
                     _data.address.detail = res.data.address[4];
                 }
-                // // console.log("data", data);
-                // // console.log("_data", _data);
+
+
                 setData(_data);
             });
         }
@@ -67,7 +67,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
 
     useEffect(() => {
         if (selectedProvinsi) {
-            // console.log("selectedProvinsi", selectedProvinsi);
+
             getListKota(selectedProvinsi.id).then((res) => {
                 setListKota(res);
             });
@@ -76,7 +76,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
 
     useEffect(() => {
         if (selectedKota) {
-            // console.log("selectedKota", selectedKota);
+
             getListKecamatan(selectedKota.id).then((res) => {
                 setListKecamatan(res);
             });
@@ -85,7 +85,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
 
     useEffect(() => {
         if (selectedKecamatan) {
-            // console.log("selectedKecamatan", selectedKecamatan);
+
             getListKelurahan(selectedKecamatan.id).then((res) => {
                 setListKelurahan(res);
             });
@@ -135,7 +135,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                         value={selectedProvinsi}
                         options={listProvinsi}
                         onChange={(e) => {
-                            // // console.log(e.value);
+
                             const _data = { ...data };
                             _data.address.provinsi = e.value.name;
                             setData(_data);
@@ -264,7 +264,7 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                 {/* <Button
                     severity="warning"
                     onClick={() => {
-                        // console.log(data);
+ 
                     }}
                     className="!px-3 !py-1"
                 >
@@ -283,8 +283,8 @@ export const CheckoutDataModal = ({ show, setShow, selectedCartItems, handler })
                     disabled={!selectedProvinsi || !selectedKota || !selectedKecamatan || !selectedKelurahan || data.address.detail == "" || data.nama == "" || data.email == "" || data.phonenumber == ""}
                     severity="success"
                     onClick={() => {
-                        // // console.log(data);
-                        // // console.log(selectedCartItems);
+
+
                         handler(data, selectedCartItems);
                         setShow(false);
                     }}

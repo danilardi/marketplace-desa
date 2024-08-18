@@ -61,7 +61,7 @@ const Cart = () => {
     const handleDeleteItem = (id) => {
         deleteCart(id).then((res) => {
             if (res) {
-                // // console.log("Deleted");
+
                 fetchCart(setCartItems);
                 setBadge(badge - 1);
             }
@@ -239,7 +239,7 @@ const Cart = () => {
                                     _selectedCartItems.push(cartItems[index]);
                                 }
                             });
-                            // // console.log(_selectedCartItems);
+
                             setSelectedCartItems(_selectedCartItems);
                             setShowCheckoutDataModal(true);
                         }}>

@@ -22,7 +22,6 @@ const CardProduct = ({ product, handleDeleteProduct, handleEditProduct }) => {
     }
 
     const handleAddToCart = () => {
-        // // console.log("add to cart")
         if (isLogin) {
             const addToCartRequest = {
                 orderQuantity: 1,

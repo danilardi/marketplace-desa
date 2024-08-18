@@ -43,8 +43,8 @@ const DetailProduct = () => {
     }, [params])
 
     useEffect(() => {
-        // // console.log("product", product)
-        // // console.log("otherProduct", otherProduct)
+
+
     }, [product, otherProduct, userReview, userRating])
 
 
@@ -59,8 +59,8 @@ const DetailProduct = () => {
     }
 
     const handleCarouselChange = (index, behavior = 'smooth') => {
-        console.log("index", index)
-        const targetElement = document.getElementById(`item${index+1}`);
+
+        const targetElement = document.getElementById(`item${index + 1}`);
         const carousel = carouselRef.current;
         if (targetElement && carousel) {
             const targetPosition = targetElement.offsetLeft;
@@ -69,7 +69,7 @@ const DetailProduct = () => {
     }
 
     const handleAddToCart = () => {
-        // console.log("add to cart")
+
         if (isLogin) {
             const addToCartRequest = {
                 orderQuantity: quantity,
@@ -103,7 +103,7 @@ const DetailProduct = () => {
     }
 
     const handleDeleteProduct = (id) => {
-        // console.log("delete product", id)
+
         deleteProduct(id).then((res) => {
             if (res) {
                 ToastSuccess("Berhasil menghapus produk")
@@ -136,7 +136,7 @@ const DetailProduct = () => {
     }
 
     // const cek = () => {
-    //     console.log("review", productReview)
+
     // }
 
     if (product !== null) return (
@@ -183,7 +183,7 @@ const DetailProduct = () => {
                                 // href={`#item${index + 1}`}
                                 onClick={(e) => {
                                     e.preventDefault()
-                                    // console.log("index", index)
+
                                     handleCarouselChange(index)
                                 }}
                                 className="w-24 h-16 bg-white rounded-md carousel-item">
@@ -278,7 +278,7 @@ const DetailProduct = () => {
                                     <div className="flex justify-between mt-2">
                                         <StarRating rating={userRating} setUserRating={setUserRating} onClick={true} size="8" />
                                         <Button className="h-8" onClick={() => {
-                                            // console.log("submit review", userReview, userRating)
+
                                             if (isLogin) {
                                                 handleAddReview()
                                             } else {

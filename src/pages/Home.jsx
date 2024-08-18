@@ -12,6 +12,7 @@ import fotoDesa6 from "../assets/image/foto-desa-6.jpg"
 import banner1 from "../assets/image/banner1.png"
 import banner2 from "../assets/image/banner2.png"
 import banner3 from "../assets/image/banner3.png"
+import banner4 from "../assets/image/banner4.png"
 
 const Home = () => {
     const navigate = useNavigate()
@@ -19,10 +20,11 @@ const Home = () => {
     const [otherProduct, setOtherProduct] = useState(null)
     const [indexBanner, setIndexBanner] = useState(1)
     const banner = [
-        banner3,
+        banner4,
         banner1,
         banner2,
         banner3,
+        banner4,
         banner1
     ]
     const fotoDesa = [
@@ -83,9 +85,9 @@ const Home = () => {
         }
     }
     const handleCarouselFotoDesaChange = (index, behavior = 'smooth') => {
-        // console.log("tess", index)
+
         const targetElement = document.getElementById(`foto-desa${index}`);
-        // console.log("targetElement", targetElement)
+
         const carousel = carouselFotoDesaRef.current;
         if (targetElement && carousel) {
             const targetPosition = targetElement.offsetLeft;
@@ -95,7 +97,7 @@ const Home = () => {
 
 
     const handleClick = () => {
-        // console.log("index", indexBanner)
+
     }
 
     return (
@@ -111,7 +113,6 @@ const Home = () => {
                 </ul>
             </div>
 
-            {/* <Button className="btn btn-primary text-white" onClick={handleClick}>Testing</Button> */}
             {/* banner */}
             <div className="flex w-full justify-center items-center shadow-md rounded-lg">
                 <a className="btn btn-circle btn-accent hover:bg-accent bg-opacity-70 text-white z-20 -mx-10 md:-mx-6" onClick={() => {

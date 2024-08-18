@@ -6,7 +6,7 @@ import { ToastError, ToastSuccess } from "../AlertNotification";
 export const login = async (body) => {
     try {
         const res = await Api.post(`/authentications`, body);
-        // console.log("cekk", res);
+
         if (res && res.status === "success") {
             // ToastSuccess("Login Success");
             if (res.data) {
@@ -24,7 +24,7 @@ export const login = async (body) => {
 export const register = async (body) => {
     try {
         const res = await Api.post(`/users`, body);
-        // // console.log("cekk", res);
+
         if (res && res.status === "success") {
             ToastSuccess("Register Success");
             return true;
@@ -37,7 +37,7 @@ export const register = async (body) => {
 export const refreshToken = async (body) => {
     try {
         const res = await Api.put(`/authentications`, body);
-        // // console.log("cekk", res);
+
         if (res && res.status === "success") {
             if (res.data) {
                 setAccessToken(res.data.accessToken);
@@ -51,22 +51,22 @@ export const refreshToken = async (body) => {
 
 export const getUser = async () => {
     try {
-        // console.log("masuk getUser");
+
         const res = await Api.get(`/users`);
-        // // console.log("getUser", res.data);
+
         if (res && res.status === "success") {
             return res;
         }
     } catch (error) {
-        // console.log(error)
+
     }
 }
 
 export const updateUser = async (body) => {
     try {
-        // // console.log("body", body);
+
         const res = await Api.put(`/users`, body);
-        // // console.log("cekk", res);
+
         // if (res && res.status === "success") {
         //     ToastSuccess("Update Success");
         //     return res;
