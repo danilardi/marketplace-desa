@@ -29,8 +29,9 @@ jobs:
           port: 22
           script: |
             cd ~/mekarsarimart
-            git pull origin master
+            git pull
             echo "sukses"
             # git status
-            # npm install
+            ls
+            npm install
             # npm run build
