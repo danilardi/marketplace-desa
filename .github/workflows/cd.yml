@@ -38,3 +38,4 @@ jobs:
             npm run build
             rm -rf /var/www/mekarsari/client
             cp -r ~/mekarsarimart/dist /var/www/mekarsari/client
+            sudo systemctl restart nginx

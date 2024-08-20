@@ -123,7 +123,7 @@ const Navbar = ({ children }) => {
                     <aside>
                         <img src={LogoWithTextBlack} alt="logo" className="h-10" />
                         <p>
-                            Desa Mekarsari Ltd.
+                            Desa Mekarsari
                             <br />
                             Kecamatan Rancabungur, Kabupaten Bogor, Jawa Barat, Indonesia. 16310
                         </p>
