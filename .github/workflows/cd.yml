@@ -28,10 +28,11 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           port: 22
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm --help
             cd ~/mekarsarimart
             git pull
-            echo "sukses"
             # git status
-            ls
             npm install
-            # npm run build
+            npm run build
