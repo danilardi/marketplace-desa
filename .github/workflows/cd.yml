@@ -32,7 +32,7 @@ jobs:
             source ~/.nvm/nvm.sh
             # npm --help
             cd ~/mekarsarimart
-            git pull
+            git pull https://${{ secrets.TOKEN_GITHUB }}@github.com/danilardi/marketplace-desa.git
             # git status
             npm install
             npm run build
