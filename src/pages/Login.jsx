@@ -53,7 +53,7 @@ const Login = () => {
                                     _account.email = e.target.value
                                     setAccount(_account)
                                 }}
-                                placeholder="Masukkan email/username disini!" />
+                                placeholder="Masukkan email/username disini" />
                         </div>
                         <div className="flex flex-col gap-2 mt-6">
                             <label htmlFor="password">Password</label>
@@ -67,7 +67,7 @@ const Login = () => {
                                         _account.password = e.target.value
                                         setAccount(_account)
                                     }}
-                                    placeholder="Masukkan password disini!" />
+                                    placeholder="Masukkan password disini" />
                             </IconField>
                             {(!isPasswordValid && account.password.length > 0) && (
                                 <small className="text-red-500">Kata sandi minimal 8 karakter</small>
